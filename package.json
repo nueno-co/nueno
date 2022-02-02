@@ -1,0 +1,60 @@
+{
+  "name": "nueno",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev-debug": "NODE_OPTIONS='--inspect' next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
+    "prettier": "prettier --write .",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged",
+    "test": "jest --watch"
+  },
+  "dependencies": {
+    "@prisma/client": "3.8.1",
+    "axios": "^0.25.0",
+    "bcryptjs": "^2.4.3",
+    "next": "12.0.8",
+    "next-auth": "^4.0.6",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^3.1.1",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jest": "^27.4.0",
+    "@types/node": "17.0.10",
+    "@types/react": "17.0.38",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "autoprefixer": "^10.4.2",
+    "babel-jest": "^27.4.6",
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^7.0.4",
+    "jest": "^27.4.7",
+    "lint-staged": "^12.3.1",
+    "postcss": "^8.4.5",
+    "prettier": "^2.5.1",
+    "prisma": "^3.8.1",
+    "tailwindcss": "^3.0.15",
+    "typescript": "4.5.5"
+  },
+  "lint-staged": {
+    "./{*,{pages,components,helpers}/**/*}.{js,ts,jsx,tsx}": [
+      "prettier --write",
+      "eslint"
+    ],
+    "./prisma/schema.prisma": [
+      "prisma format"
+    ]
+  },
+  "prisma": {
+    "seed": "ts-node ./prisma/seed.ts"
+  }
+}
