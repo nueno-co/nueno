@@ -1,10 +1,9 @@
-export type ErrorParams = {
+export default class ErrorEntity {
   code: number;
   message: string;
-};
 
-export default class ErrorEntity {
-  build(params: ErrorParams) {
-    return params;
+  constructor(code: number, message: string) {
+    this.code = code;
+    this.message = message;
   }
 }
