@@ -18,7 +18,7 @@ export default class JobEntity {
 
     return prisma.job.create({
       data: {
-        uid: uuid().substring(0, 10),
+        uid: uuid().substring(0, 8),
         title: params.title,
         description: params.description,
         companyId: user.companyId,
