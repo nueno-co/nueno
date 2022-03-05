@@ -1,8 +1,23 @@
+import { JobsListResponseParams } from "@api-contracts/jobs/list";
+import axios from "axios";
 import Link from "next/link";
+import { useQuery } from "react-query";
 
 import Shell from "@components/Shell";
 
 export default function Jobs() {
+  const { isLoading, data: jobs } = useQuery("jobs", getJobs);
+
+  async function getJobs() {
+    const response = await axios.get("/api/jobs/list");
+    const responseData: JobsListResponseParams = response.data;
+    return responseData;
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <Shell>
       <header>
@@ -19,6 +34,11 @@ export default function Jobs() {
           </span>
         </div>
       </header>
+      <main>
+        {jobs?.map((job) => {
+          return <div key={job.uid}>{job.title}</div>;
+        })}
+      </main>
     </Shell>
   );
 }

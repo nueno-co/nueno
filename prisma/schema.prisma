@@ -10,13 +10,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Company {
+  id    Int     @id @default(autoincrement())
+  name  String
+  User  User[]
+  Job   Job[]
+  Field Field[]
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
   email     String   @unique
   password  String?
+  companyId Int
+  Company   Company  @relation(fields: [companyId], references: [id])
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
+}
 
-  @@map(name: "users")
+model Job {
+  id          Int      @id @default(autoincrement())
+  uid         String   @unique
+  title       String
+  description String
+  companyId   Int
+  Company     Company  @relation(fields: [companyId], references: [id])
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+
+  @@index([uid])
+  Field Field[]
+}
+
+enum FieldType {
+  SHORT_TEXT    @map("short_text")
+  LONG_TEXT     @map("long_text")
+  CHECKBOX      @map("checkbox")
+  SELECT        @map("select")
+  MULTI_SELECT  @map("multi_select")
+}
+
+model Field {
+  id          Int           @id @default(autoincrement())
+  label       String
+  type        FieldType     @default(SHORT_TEXT)
+  required    Boolean       @default(false)
+  jobId       Int
+  Job         Job           @relation(fields: [jobId], references: [id])
+  FieldValue  FieldValue[]
+  FieldChoice FieldChoice[]
+  Company     Company?      @relation(fields: [companyId], references: [id])
+  companyId   Int?
+}
+
+model FieldValue {
+  id      Int    @id @default(autoincrement())
+  text    String
+  fieldId Int
+  Field   Field  @relation(fields: [fieldId], references: [id])
+}
+
+model FieldChoice {
+  id      Int     @id @default(autoincrement())
+  name    String
+  fieldId Int
+  default Boolean @default(false)
+  Field   Field   @relation(fields: [fieldId], references: [id])
 }

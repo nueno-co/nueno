@@ -34,11 +34,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const hashedPassword = await hashPassword(password);
 
+  const company = await prisma.company.create({
+    data: {
+      name,
+    },
+  });
+
   await prisma.user.create({
     data: {
       name,
       email: userEmail,
       password: hashedPassword,
+      companyId: company.id,
     },
   });
 

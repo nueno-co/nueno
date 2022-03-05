@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
 
 import { verifyPassword } from "@helpers/auth";
@@ -46,12 +46,15 @@ export default NextAuth({
 
       return token;
     },
-    session: ({ session, token }) => {
-      if (token) {
-        session.id = token.id;
-      }
-
-      return session;
+    async session({ session, token }) {
+      const currentSession: Session = {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id as number,
+        },
+      };
+      return currentSession;
     },
   },
   secret: "test",

@@ -1,8 +1,30 @@
+import { ApplicationFormsCreateRequestParams } from "@api-contracts/application-forms/create";
 import { DotsVerticalIcon } from "@heroicons/react/outline";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { BaseSyntheticEvent } from "react";
+
+import { asStringOrUndefined } from "@helpers/type-safety";
 
 import Shell from "@components/Shell";
 
 export default function JobsNew() {
+  const router = useRouter();
+  const jobUid = asStringOrUndefined(router.query.id);
+
+  async function submit(e: BaseSyntheticEvent) {
+    e.preventDefault();
+    if (!jobUid) return;
+
+    try {
+      const requestParams: ApplicationFormsCreateRequestParams = { jobUid, fields: [] };
+      await axios.post("/api/application-forms/create", requestParams);
+
+      router.push({ pathname: "/jobs/" });
+    } catch (e) {
+      console.log(e);
+    }
+  }
   return (
     <Shell>
       <header>
@@ -11,6 +33,7 @@ export default function JobsNew() {
           <span className="sm:ml-3">
             <button
               type="button"
+              onClick={submit}
               className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               Publish
             </button>
@@ -46,15 +69,14 @@ export default function JobsNew() {
                     <DotsVerticalIcon className="w-5 h-5 text-gray-400 cursor-move" aria-hidden="true" />
                     <div className="flex-auto p-2 bg-gray-100 rounded">
                       <p className="text-sm font-semibold text-md">Type</p>
-                      <select className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="short_text" selected>
-                          Short text
-                        </option>
+                      <select
+                        defaultValue="short_text"
+                        className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="short_text">Short text</option>
                         <option value="long_text">Long text</option>
                         <option value="checkbox">Yes/No</option>
                         <option value="select">Select one</option>
                         <option value="multi_select">Select multiple</option>
-                        <option value="number">Number</option>
                       </select>
                       <p className="text-sm font-semibold text-md">Type</p>
                       <input
@@ -70,6 +92,7 @@ export default function JobsNew() {
                   <div>
                     <button
                       type="button"
+                      onClick={submit}
                       className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                       Add field
                     </button>
@@ -80,12 +103,7 @@ export default function JobsNew() {
             <div className="md:col-span-1">
               <div className="px-4 sm:px-0">
                 <h3 className="text-lg font-medium leading-6 text-gray-900">Tips</h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  <ul className="list-disc">
-                    <li>Use common job titles for searchability.</li>
-                    <li>Advertise for just one job eg: "Software Engineer", not "Software Engineers".</li>
-                  </ul>
-                </p>
+                <div className="mt-1 text-sm text-gray-600">...</div>
               </div>
             </div>
           </div>
