@@ -21,10 +21,10 @@ export default function JobsNew() {
             <div className="mt-5 md:mt-0 md:col-span-2">
               <form action="#" method="POST">
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
-                  <div className="px-4 py-5 space-y-6 bg-white sm:p-6">
+                  <div className="px-4 py-5 bg-white sm:p-6">
                     <div>
                       <label htmlFor="job-title" className="block mb-2 text-sm font-medium text-gray-700">
-                        <span className="pr-1 text-red-600">*</span>Job title
+                        <span className="pr-1 text-red-600">*</span> Job title
                       </label>
                       <input
                         id="job-title"
@@ -37,7 +37,7 @@ export default function JobsNew() {
                     </div>
                   </div>
 
-                  <div className="px-4 py-5 space-y-6 bg-white sm:p-6">
+                  <div className="px-4 py-5 bg-white sm:p-6">
                     <div>
                       <label htmlFor="job-title" className="block mb-2 text-sm font-medium text-gray-700">
                         <span className="pr-1 text-red-600">*</span>Description

@@ -61,8 +61,10 @@ export default function Shell(props: { children: ReactNode }) {
               <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <img className="w-7 h-7" src="/nueno-logo-white.svg" alt="Logo" />
+                    <div className="flex-shrink-0 cursor-pointer">
+                      <Link href="/jobs">
+                        <img className="w-7 h-7" src="/nueno-logo-white.svg" alt="Logo" />
+                      </Link>
                     </div>
                     <div className="hidden md:block">
                       <div className="flex items-baseline ml-10 space-x-4">
