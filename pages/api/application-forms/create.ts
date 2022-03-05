@@ -12,7 +12,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const applicationFormEntity = new ApplicationFormEntity();
 
   try {
-    const response: ApplicationFormsCreateResponseParams = await applicationFormEntity.create(req.body);
+    const response: ApplicationFormsCreateResponseParams = await applicationFormEntity.create(
+      req.body,
+      session.user.id
+    );
     return res.status(201).json(response);
   } catch (error) {
     const errorCode = applicationFormEntity.error?.code;
