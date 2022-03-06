@@ -8,13 +8,35 @@ on:
       - main
 jobs:
   ci:
+    runs-on: ubuntu-latest
+    container: node:14
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres_db
+          POSTGRES_PASSWORD: postgres_password
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres_user
+        ports:
+          - 5432:5432
+        # set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
       DATABASE_URL: ${{secrets.TEST_DATABASE_URL}}
       CODE_CLIMATE_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
-    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
 
       - name: Setup node 14
         uses: actions/setup-node@v2
