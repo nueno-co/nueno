@@ -1,3 +1,8 @@
+<p align="center">
+  <a href="https://codeclimate.com/github/Simba-City/nueno/maintainability"><img src="https://api.codeclimate.com/v1/badges/1e547d9b8a46c47be067/maintainability" /></a>
+  <a href="https://codeclimate.com/github/Simba-City/nueno/test_coverage"><img src="https://api.codeclimate.com/v1/badges/1e547d9b8a46c47be067/test_coverage" /></a>
+</p>
+
 # Nueno - Open Source ATS
 
 ## Tech Stack
