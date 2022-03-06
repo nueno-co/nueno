@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev-debug": "NODE_OPTIONS='--inspect' next dev",
+    "dev:debug": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
@@ -11,7 +11,8 @@
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "test": "jest --watch"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",
