@@ -49,5 +49,7 @@ jobs:
       - name: Publish code coverage to code climate
         if: ${{env.CODE_CLIMATE_TEST_REPORTER_ID}}
         uses: paambaati/codeclimate-action@v3.0.0
+        with:
+          debug: true
         env:
           CC_TEST_REPORTER_ID: ${{env.CODE_CLIMATE_TEST_REPORTER_ID}}
