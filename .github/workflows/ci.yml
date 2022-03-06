@@ -26,3 +26,7 @@ jobs:
       - name: Run linter
         uses: actions/setup-node@v2
       - run: npm run lint
+
+      - name: Run tests
+        uses: actions/setup-node@v2
+      - run: npm run test:coverage
