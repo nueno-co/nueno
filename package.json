@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
+    "check-types": "tsc --noemit",
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "pre-commit": "lint-staged",

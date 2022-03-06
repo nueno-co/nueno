@@ -1,3 +1,6 @@
-test("multiplication works", () => {
-  expect(2 * 2).toEqual(4);
+import { asStringOrUndefined } from "@helpers/type-safety";
+
+test("returns undefined when null", () => {
+  const testy = asStringOrUndefined(null);
+  expect(testy).toEqual(undefined);
 });

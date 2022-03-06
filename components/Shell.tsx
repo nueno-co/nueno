@@ -23,7 +23,7 @@ const userNavigation = [
   { name: "Sign out", href: "/api/auth/signout" },
 ];
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
