@@ -27,7 +27,7 @@ model User {
   email     String   @unique
   password  String?
   companyId Int
-  Company   Company  @relation(fields: [companyId], references: [id])
+  Company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -38,7 +38,7 @@ model Job {
   title       String
   description String
   companyId   Int
-  Company     Company  @relation(fields: [companyId], references: [id])
+  Company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -60,7 +60,7 @@ model Field {
   type        FieldType     @default(SHORT_TEXT)
   required    Boolean       @default(false)
   jobId       Int
-  Job         Job           @relation(fields: [jobId], references: [id])
+  Job         Job           @relation(fields: [jobId], references: [id], onDelete: Cascade)
   FieldValue  FieldValue[]
   FieldChoice FieldChoice[]
   Company     Company?      @relation(fields: [companyId], references: [id])
@@ -73,7 +73,7 @@ model FieldValue {
   id        Int      @id @default(autoincrement())
   text      String
   fieldId   Int
-  Field     Field    @relation(fields: [fieldId], references: [id])
+  Field     Field    @relation(fields: [fieldId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -83,7 +83,7 @@ model FieldChoice {
   name      String
   fieldId   Int
   default   Boolean  @default(false)
-  Field     Field    @relation(fields: [fieldId], references: [id])
+  Field     Field    @relation(fields: [fieldId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
