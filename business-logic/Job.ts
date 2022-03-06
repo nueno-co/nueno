@@ -30,7 +30,7 @@ export default class JobEntity {
     const user = await new UserEntity().find(userId);
 
     if (!user) {
-      this.error = new ErrorEntity().build({ code: 401, message: "Not found" });
+      this.error = new ErrorEntity(401, "Not found");
       throw new Error();
     }
 

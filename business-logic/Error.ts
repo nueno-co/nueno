@@ -1,4 +1,5 @@
 export default class ErrorEntity {
+  // TODO: create custom HTTP errors
   code: number;
   message: string;
 
