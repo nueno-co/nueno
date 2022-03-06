@@ -8,10 +8,9 @@ on:
       - main
 jobs:
   ci:
-    build:
-      env:
-        key1: ${{secrets.test2}}
-      runs-on: ubuntu-latest
+    env:
+      key1: ${{secrets.test2}}
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
