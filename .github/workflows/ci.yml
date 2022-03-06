@@ -11,15 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup node 14
+        uses: actions/setup-node@v2
         with:
           node-version: 14.x
           cache: npm
-
-      - name: install dependencies
       - run: npm install
 
-      - name: run typechecks
-      - run: npm run check-types
-
-      - name: run linter
+      - name: Run linter
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          cache: npm
       - run: npm run lint
