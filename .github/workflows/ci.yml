@@ -23,6 +23,7 @@ jobs:
       - run: npm run test:coverage
 
       - name: Test & publish code coverage
+        if: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID2}}
         uses: paambaati/codeclimate-action@v3.0.0
         env:
-          CC_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID2}}
+          CC_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
