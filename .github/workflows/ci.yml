@@ -19,9 +19,10 @@ jobs:
           cache: npm
       - run: npm install
 
+      - name: Run typecheck
+        uses: actions/setup-node@v2
+      - run: npm run check-types
+
       - name: Run linter
         uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-          cache: npm
       - run: npm run lint
