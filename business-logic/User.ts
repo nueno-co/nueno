@@ -1,12 +1,10 @@
 import { SignupRequestParams } from "@api-contracts/auth/signup";
-import ErrorEntity from "@business-logic/Error";
+import BadRequestError from "@business-logic/errors/BadRequestError";
 
 import { hashPassword } from "@helpers/auth";
 import prisma from "@helpers/prisma";
 
 export default class UserEntity {
-  error: ErrorEntity | undefined;
-
   async find(id: number) {
     return prisma.user.findUnique({
       where: {
@@ -42,13 +40,11 @@ export default class UserEntity {
 
   private async validateCreate(email: string, password: string) {
     if (!email.includes("@")) {
-      this.error = new ErrorEntity(402, "Invalid email");
-      throw Error();
+      throw new BadRequestError("Invalid email");
     }
 
     if (password.trim().length < 7) {
-      this.error = new ErrorEntity(422, "Invalid input - password should be at least 7 characters long.");
-      throw Error();
+      throw new BadRequestError("Invalid input - password should be at least 7 characters long.");
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -56,8 +52,7 @@ export default class UserEntity {
     });
 
     if (existingUser) {
-      this.error = new ErrorEntity(409, "Email address is already registered.");
-      throw Error();
+      throw new BadRequestError("Email address is already registered.");
     }
   }
 }

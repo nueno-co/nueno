@@ -1,20 +1,15 @@
 import { JobsCreateRequestParams } from "@api-contracts/jobs/create";
-import ErrorEntity from "@business-logic/Error";
 import UserEntity from "@business-logic/User";
+import NotFoundError from "@business-logic/errors/NotFoundError";
 import { v4 as uuid } from "uuid";
 
 import prisma from "@helpers/prisma";
 
 export default class JobEntity {
-  error: ErrorEntity | undefined;
-
   async create(params: JobsCreateRequestParams, userId: number) {
     const user = await new UserEntity().find(userId);
 
-    if (!user) {
-      this.error = new ErrorEntity(401, "Not found");
-      throw new Error();
-    }
+    if (!user) throw new NotFoundError("Not found");
 
     return prisma.job.create({
       data: {
@@ -29,10 +24,7 @@ export default class JobEntity {
   async list(userId: number) {
     const user = await new UserEntity().find(userId);
 
-    if (!user) {
-      this.error = new ErrorEntity(401, "Not found");
-      throw new Error();
-    }
+    if (!user) throw new NotFoundError("Not found");
 
     return prisma.job.findMany({
       where: {
