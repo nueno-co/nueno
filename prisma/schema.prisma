@@ -11,11 +11,14 @@ datasource db {
 }
 
 model Company {
-  id    Int     @id @default(autoincrement())
-  name  String
-  User  User[]
-  Job   Job[]
-  Field Field[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+  Job       Job[]
+  Field     Field[]
+
 }
 
 model User {
@@ -25,8 +28,8 @@ model User {
   password  String?
   companyId Int
   Company   Company  @relation(fields: [companyId], references: [id])
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Job {
@@ -36,11 +39,11 @@ model Job {
   description String
   companyId   Int
   Company     Company  @relation(fields: [companyId], references: [id])
-  createdAt   DateTime @default(now()) @map(name: "created_at")
-  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  @@index([uid])
   Field Field[]
+  @@index([uid])
 }
 
 enum FieldType {
@@ -62,19 +65,25 @@ model Field {
   FieldChoice FieldChoice[]
   Company     Company?      @relation(fields: [companyId], references: [id])
   companyId   Int?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
 model FieldValue {
-  id      Int    @id @default(autoincrement())
-  text    String
-  fieldId Int
-  Field   Field  @relation(fields: [fieldId], references: [id])
+  id        Int      @id @default(autoincrement())
+  text      String
+  fieldId   Int
+  Field     Field    @relation(fields: [fieldId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model FieldChoice {
-  id      Int     @id @default(autoincrement())
-  name    String
-  fieldId Int
-  default Boolean @default(false)
-  Field   Field   @relation(fields: [fieldId], references: [id])
+  id        Int      @id @default(autoincrement())
+  name      String
+  fieldId   Int
+  default   Boolean  @default(false)
+  Field     Field    @relation(fields: [fieldId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
