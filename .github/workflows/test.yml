@@ -6,9 +6,11 @@ on:
   pull_request:
     branches:
       - main
-steps:
-  uses: paambaati/codeclimate-action@v3.0.0
-  env:
-    CC_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
-  with:
-    coverageCommand: yarn run test:coverage
+jobs:
+  test:
+    steps:
+      uses: paambaati/codeclimate-action@v3.0.0
+      env:
+        CC_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
+      with:
+        coverageCommand: yarn run test:coverage
