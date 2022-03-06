@@ -8,7 +8,11 @@ on:
       - main
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    build:
+      env:
+        key1: ${{secrets.test2}}
+      runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
 
@@ -23,7 +27,7 @@ jobs:
       - run: npm run test:coverage
 
       - name: Test & publish code coverage
-        if: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID2}}
+        if: ${{env.key1}}
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
