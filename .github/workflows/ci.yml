@@ -21,3 +21,8 @@ jobs:
       - run: npm run check-types
       - run: npm run lint
       - run: npm run test:coverage
+
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
