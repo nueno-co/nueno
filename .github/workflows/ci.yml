@@ -42,6 +42,11 @@ jobs:
       - run: npm run check-types
       - run: npm run lint
 
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+
       - run: npm install
       - run: npm run check-types
       - run: npm run lint
