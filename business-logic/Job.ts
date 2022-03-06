@@ -1,8 +1,8 @@
 import { JobsCreateRequestParams } from "@api-contracts/jobs/create";
 import UserEntity from "@business-logic/User";
-import NotFoundError from "@business-logic/errors/NotFoundError";
 import { v4 as uuid } from "uuid";
 
+import NotFoundError from "@helpers/errors/NotFoundError";
 import prisma from "@helpers/prisma";
 
 export default class JobEntity {

@@ -1,9 +1,9 @@
 import JobEntity from "@business-logic/Job";
 import { Job } from "@prisma/client";
-import { minimalSetup } from "@tests/helpers/setup";
-import { teardown } from "@tests/helpers/teardown";
 
 import prisma from "@helpers/prisma";
+import { minimalSetup } from "@helpers/tests/setup";
+import { teardown } from "@helpers/tests/teardown";
 
 beforeEach(async () => {
   await teardown();

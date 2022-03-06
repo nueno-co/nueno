@@ -1,7 +1,8 @@
 import { SignupResponseParams as ResponseParams } from "@api-contracts/auth/signup";
 import UserEntity from "@business-logic/User";
-import HttpError from "@business-logic/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
+
+import HttpError from "@helpers/errors/HttpError";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return;

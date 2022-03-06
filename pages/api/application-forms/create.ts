@@ -1,8 +1,9 @@
 import { ApplicationFormsCreateResponseParams as ResponseParams } from "@api-contracts/application-forms/create";
 import ApplicationFormEntity from "@business-logic/ApplicationForm";
-import HttpError from "@business-logic/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
+
+import HttpError from "@helpers/errors/HttpError";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return;

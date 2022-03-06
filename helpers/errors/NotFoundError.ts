@@ -1,4 +1,4 @@
-import HttpError from "@business-logic/errors/HttpError";
+import HttpError from "@helpers/errors/HttpError";
 
 export default class NotFoundError extends HttpError {
   code: number;

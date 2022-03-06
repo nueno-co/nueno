@@ -1,8 +1,9 @@
 import { JobsListResponseParams as ResponseParams } from "@api-contracts/jobs/list";
 import JobEntity from "@business-logic/Job";
-import HttpError from "@business-logic/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
+
+import HttpError from "@helpers/errors/HttpError";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") return;

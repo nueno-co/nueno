@@ -1,7 +1,7 @@
 import { SignupRequestParams } from "@api-contracts/auth/signup";
-import BadRequestError from "@business-logic/errors/BadRequestError";
 
 import { hashPassword } from "@helpers/auth";
+import BadRequestError from "@helpers/errors/BadRequestError";
 import prisma from "@helpers/prisma";
 
 export default class UserEntity {

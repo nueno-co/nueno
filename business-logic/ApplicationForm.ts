@@ -1,6 +1,7 @@
 import { ApplicationFormsCreateRequestParams } from "@api-contracts/application-forms/create";
 import UserEntity from "@business-logic/User";
-import NotFoundError from "@business-logic/errors/NotFoundError";
+
+import NotFoundError from "@helpers/errors/NotFoundError";
 
 export default class ApplicationFormEntity {
   async create(params: ApplicationFormsCreateRequestParams, userId: number) {
