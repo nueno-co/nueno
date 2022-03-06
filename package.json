@@ -11,8 +11,9 @@
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test": "npm run test:db:reset && node --inspect node_modules/.bin/jest --runInBand --watch --testNamePattern",
+    "test:coverage": "npm run test:db:reset && node --inspect node_modules/.bin/jest --coverage",
+    "test:db:reset": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed && dotenv -e .env.test -- npx prisma db push"
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",
@@ -38,6 +39,7 @@
     "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.2",
     "babel-jest": "^27.4.6",
+    "dotenv-cli": "^5.0.0",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

@@ -8,7 +8,8 @@
       "@helpers/*": ["helpers/*"],
       "@pages/*": ["pages/*"],
       "@business-logic/*": ["business-logic/*"],
-      "@api-contracts/*": ["api-contracts/*"]
+      "@api-contracts/*": ["api-contracts/*"],
+      "@tests/*": ["tests/*"]
     },
     "skipLibCheck": true,
     "strict": true,
