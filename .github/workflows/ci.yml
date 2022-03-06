@@ -9,6 +9,7 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    container: node:14
     services:
       postgres:
         image: postgres:latest
