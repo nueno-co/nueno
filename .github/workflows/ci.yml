@@ -9,7 +9,7 @@ on:
 jobs:
   ci:
     env:
-      key1: ${{secrets.test2}}
+      CODE_CLIMATE_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +26,7 @@ jobs:
       - run: npm run test:coverage
 
       - name: Test & publish code coverage
-        if: ${{env.key1}}
+        if: ${{env.CODE_CLIMATE_TEST_REPORTER_ID}}
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
