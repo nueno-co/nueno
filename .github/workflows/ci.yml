@@ -12,7 +12,7 @@ jobs:
     # container: node:14
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:12
         env:
           POSTGRES_DB: postgres_db
           POSTGRES_PASSWORD: postgres_password
@@ -27,7 +27,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      # DATABASE_URL: postgres://postgres_user:postgres_password@postgres:5432/postgres_db
       DATABASE_URL: postgres://postgres_user:postgres_password@localhost:5432/postgres_db
       CODE_CLIMATE_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
 
@@ -39,11 +38,6 @@ jobs:
         with:
           node-version: 14.x
           cache: npm
-
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes postgresql-client
 
       - run: npm install
       - run: npm run check-types
