@@ -30,6 +30,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.0.0-alpha.7",
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",
     "@types/bcryptjs": "^2.4.2",
     "@types/jest": "^27.4.0",
