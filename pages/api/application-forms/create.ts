@@ -1,5 +1,6 @@
 import { ApplicationFormsCreateResponseParams as ResponseParams } from "@api-contracts/application-forms/create";
 import ApplicationFormEntity from "@business-logic/ApplicationForm";
+import withAsyncHandler from "middleware/with_async_handler";
 import withCheckAuthHandler from "middleware/with_check_auth_user";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
@@ -22,4 +23,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     throw error;
   }
 }
-export default withCheckAuthHandler(handler);
+export default withAsyncHandler(withCheckAuthHandler(handler));
