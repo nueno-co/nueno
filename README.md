@@ -16,6 +16,9 @@
 2. open `localhost:3000`
 
 **Test Driven Development:**
+
+Recommended workflow when wrting code for `/business-logic`.
+
 1. `npm run test`
 2. in chrome open: `chrome://inspect` and click on the remote target URL. This will open a console with your test process.
 3. add `debugger` statement in your code
