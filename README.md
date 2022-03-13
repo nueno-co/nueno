@@ -34,6 +34,6 @@ Optionally, you can add a name pattern of the file name:
 npm run test User
 ```
 
-**Check test coverage**
+**Check test coverage:**
 1. `test:coverage`
 2. open file `./coverage/lcov-report/index.html`
