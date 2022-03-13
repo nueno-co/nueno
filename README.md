@@ -17,7 +17,7 @@
 
 **Test Driven Development:**
 
-Recommended workflow when wrting code for `/business-logic`.
+Recommended workflow when wrting code for `./business-logic`.
 
 1. `npm run test`
 2. in chrome open: `chrome://inspect` and click on the remote target URL. This will open a console with your test process.
@@ -29,7 +29,11 @@ Recommended workflow when wrting code for `/business-logic`.
 npm run test
 ```
 
-Optionally, you can add a name pattern for the file name:
+Optionally, you can add a name pattern of the file name:
 ```
 npm run test User
 ```
+
+**Check test coverage**
+1. `test:coverage`
+2. open file `./coverage/lcov-report/index.html`
