@@ -35,5 +35,5 @@ npm run test User
 ```
 
 **Check test coverage:**
-1. `test:coverage`
+1. `npm run test:coverage`
 2. open file `./coverage/lcov-report/index.html`
