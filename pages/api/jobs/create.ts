@@ -1,4 +1,7 @@
-import { JobsCreateResponseParams as ResponseParams } from "@api-contracts/jobs/create";
+import {
+  JobsCreateRequestParams as RequestParams,
+  JobsCreateResponseParams as ResponseParams,
+} from "@api-contracts/jobs/create";
 import JobEntity from "@business-logic/Job";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
@@ -14,7 +17,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const entity = new JobEntity();
 
   try {
-    const response: ResponseParams = await entity.create(req.body, session.user.id);
+    const requestBody: RequestParams = req.body;
+    const response: ResponseParams = await entity.create(requestBody, session.user.id);
     return res.status(200).json(response);
   } catch (error) {
     if (error instanceof HttpError) return res.status(error.code).json(error.message);
