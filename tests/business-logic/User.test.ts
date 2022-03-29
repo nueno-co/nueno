@@ -7,6 +7,8 @@ import { teardown } from "@helpers/tests/teardown";
 let passwordHash: string;
 const email = "test@example.com";
 
+// I used 40000ms as timeout.
+
 describe("User Entity", () => {
   beforeEach(async () => {
     await teardown();
@@ -20,8 +22,10 @@ describe("User Entity", () => {
         email,
         password: passwordHash,
       };
+
       const userEntity = new UserEntity();
       const result = await userEntity.create(body);
+      
       expect(result.message).toBe("User created");
     }, 40000);
 
@@ -31,8 +35,10 @@ describe("User Entity", () => {
         email,
         password: passwordHash,
       };
+
       const entity = new UserEntity();
       await entity.create(body);
+
       await expect(async () => {
         await entity.create(body);
       }).rejects.toThrowError("Email address is already registered.");
@@ -44,11 +50,13 @@ describe("User Entity", () => {
         email: "chris2022rock.com",
         password: passwordHash,
       };
+
       const userEntity = new UserEntity();
+
       await expect(async () => {
         await userEntity.create(body);
       }).rejects.toThrowError("Invalid email");
-    }, 4000);
+    }, 40000);
 
     it("should not create user if password validation fails", async () => {
       const body = {
@@ -62,8 +70,7 @@ describe("User Entity", () => {
       await expect(async () => {
         await userEntity.create(body);
       }).rejects.toThrowError("Invalid input - password should be at least 7 characters long.");
-
-    }, 4000);
+    }, 40000);
   });
 });
 
@@ -86,6 +93,7 @@ describe("#GetExistingUser", () => {
 
     const userEntity = new UserEntity();
     const result = await userEntity.find(user.id);
+
     expect(result?.name).toBe(user.name);
-  }, 4000);
+  }, 40000);
 });
