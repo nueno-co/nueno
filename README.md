@@ -32,7 +32,7 @@ docker-compose ps
 
 
 ### Code Climate (for code quality check)
-Create code climate account and add the `CODE_CLIMATE_TEST_REPORTER_ID` to your github repo settings.
+Create a <a href="https://codeclimate.com/quality/pricing/">free code climate account</a> and add the `CODE_CLIMATE_TEST_REPORTER_ID` to your github repo settings.
 
 <details>
 <summary>Screenshot</summary>
