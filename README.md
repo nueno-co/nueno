@@ -6,8 +6,38 @@
 # Nueno - Open Source ATS (Applicant Tracking System)
 
 ## Project setup
-1. Create `.env.development` + `.env.test` file and add `DATABASE_URL`
-2. Create code climate account and set `CODE_CLIMATE_TEST_REPORTER_ID` in your github repo settings
+
+### Database
+1. Remove ".example" from `.env.example` and from `.env.test.example`
+2. run `docker-compose up -d`
+
+<details>
+<summary>You haven't installed docker and docker-compose on your system?</summary>
+
+  <a href="https://docs.docker.com/compose/install/">Here's an installation guide</a>
+  
+You'll only need these commands when using docker-compose:
+```bash
+# start running containers
+docker-compose up -d
+
+# shut-down running containers
+docker-compose down
+
+# list running containers
+docker-compose ps
+```
+
+</details>
+
+
+### Code Climate (for code quality check)
+Create a <a href="https://codeclimate.com/quality/pricing/">free code climate account</a> and add the `CODE_CLIMATE_TEST_REPORTER_ID` to your github repo settings.
+
+<details>
+<summary>Screenshot</summary>
+<img width="1114" alt="image" src="https://user-images.githubusercontent.com/98182227/160672909-f596095f-7820-4b39-9260-0582d117287d.png">
+</details>
 
 ## Development workflow
 

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:12
+        image: postgres:13.1
         env:
           POSTGRES_DB: postgres_db
           POSTGRES_PASSWORD: postgres_password
