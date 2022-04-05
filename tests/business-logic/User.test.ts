@@ -7,8 +7,6 @@ import { teardown } from "@helpers/tests/teardown";
 let passwordHash: string;
 const email = "test@example.com";
 
-// I used 40000ms as timeout.
-
 describe("User Entity", () => {
   beforeEach(async () => {
     await teardown();
@@ -27,7 +25,7 @@ describe("User Entity", () => {
       const result = await userEntity.create(body);
       
       expect(result.message).toBe("User created");
-    }, 40000);
+    });
 
     it("should not create user if email already exists", async () => {
       const body = {
@@ -42,7 +40,7 @@ describe("User Entity", () => {
       await expect(async () => {
         await entity.create(body);
       }).rejects.toThrowError("Email address is already registered.");
-    }, 40000);
+    });
 
     it("Should not create user when email is invalid", async () => {
       const body = {
@@ -56,7 +54,7 @@ describe("User Entity", () => {
       await expect(async () => {
         await userEntity.create(body);
       }).rejects.toThrowError("Invalid email");
-    }, 40000);
+    });
 
     it("should not create user if password validation fails", async () => {
       const body = {
@@ -64,13 +62,13 @@ describe("User Entity", () => {
         email: "test2@example.com",
         password: "",
       };
-      
+
       const userEntity = new UserEntity();
 
       await expect(async () => {
         await userEntity.create(body);
       }).rejects.toThrowError("Invalid input - password should be at least 7 characters long.");
-    }, 40000);
+    });
   });
 });
 
@@ -95,5 +93,5 @@ describe("#GetExistingUser", () => {
     const result = await userEntity.find(user.id);
 
     expect(result?.name).toBe(user.name);
-  }, 40000);
+  });
 });
