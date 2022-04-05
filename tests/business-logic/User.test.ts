@@ -24,10 +24,11 @@ describe("User", () => {
         await entity.create(payload);
       }).rejects.toThrowError("Invalid email");
     });
+
     it("throws error if password provided was invalid", async () => {
       const payload = {
         name: "John Doe",
-        email: "johndoe@gmail.com",
+        email: "johndoe@example.com",
         password: "",
       };
       const entity = new UserEntity();
@@ -39,7 +40,7 @@ describe("User", () => {
     it("throws error if user email already exists", async () => {
       const payload = {
         name: "John Doe",
-        email: "johndoe@gmail.com",
+        email: "johndoe@example.com",
         password: hashedPassword,
       };
       const entity = new UserEntity();
@@ -48,10 +49,11 @@ describe("User", () => {
         await entity.create(payload);
       }).rejects.toThrowError("Email address is already registered.");
     });
+
     it("creates a new user", async () => {
       const payload = {
         name: "John Doe",
-        email: "johndoe@gmail.com",
+        email: "johndoe@example.com",
         password: hashedPassword,
       };
       const entity = new UserEntity();
@@ -71,7 +73,7 @@ describe("User", () => {
       const newUser = await prisma.user.create({
         data: {
           name: "John Doe",
-          email: "johndoe@gmail.com",
+          email: "johndoe@example.com",
           password: hashedPassword,
           companyId: company.id,
         },
