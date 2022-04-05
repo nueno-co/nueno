@@ -11,7 +11,7 @@
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "test": "npm run test:db:reset && node --inspect node_modules/.bin/jest --runInBand --watch --testNamePattern",
+    "test": "npm run test:db:reset && node --inspect node_modules/jest/bin/jest.js --runInBand --watch --testNamePattern",
     "test:coverage": "npm run test:db:reset && node --inspect node_modules/.bin/jest --coverage",
     "test:db:reset": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed && dotenv -e .env.test -- npx prisma db push"
   },
