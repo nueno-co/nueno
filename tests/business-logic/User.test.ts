@@ -16,7 +16,7 @@ describe("User", () => {
     it("throws error if email address provided was invalid", async () => {
       const payload = {
         name: "John Doe",
-        email: "johndoegmail.com",
+        email: "johndoeexample.com",
         password: hashedPassword,
       };
       const entity = new UserEntity();
