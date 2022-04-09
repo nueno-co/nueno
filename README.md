@@ -8,7 +8,7 @@
 ## Project setup
 
 ### Database
-1. Remove ".example" from `.env.example` and from `.env.test.example`
+1. Duplicate `env.example` and `.env.test.example` and rename to `.env` and `.env.test`
 2. run `docker-compose up -d`
 
 <details>
