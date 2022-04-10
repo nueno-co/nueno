@@ -16,7 +16,7 @@ describe("User", () => {
   describe('Users Test', () => {
     it('should create new user',async () => {
       const userBody = {
-        name:"Nsengimana Lambert",
+        name:"Lambert Nsengimana",
         email:userEmail,
         password:hashedPassword
       }
@@ -28,7 +28,7 @@ describe("User", () => {
 
     it('should avoid creating user when exists',async () => {
       const userBody = {
-        name:"Nsengimana Lambert",
+        name:"Lambert Nsengimana",
         email:userEmail,
         password:hashedPassword
       }
