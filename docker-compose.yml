@@ -4,8 +4,8 @@ services:
   postgres_development:
     image: postgres:13.1
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
       - POSTGRES_DB=DB_DEVELOPMENT_DOCKER
     ports:
       - 5432:5432
