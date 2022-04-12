@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  postgres_development:
+    image: postgres:13.1
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=DB_DEVELOPMENT_DOCKER
+    ports:
+      - 5432:5432
+
+  postgres_test:
+    image: postgres:13.1
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=DB_TEST_DOCKER
+    ports:
+      # NOTE: We are using a different port here because
+      # we already run the postgres_development on the default "5432" port
+      - 54321:5432

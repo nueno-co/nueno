@@ -3,33 +3,67 @@
   <a href="https://codeclimate.com/github/Simba-City/nueno/test_coverage"><img src="https://api.codeclimate.com/v1/badges/1e547d9b8a46c47be067/test_coverage" /></a>
 </p>
 
-# Nueno - Open Source ATS
+# Nueno - Open Source ATS (Applicant Tracking System)
 
-## Tech Stack
+## Project setup
 
-- Prisma
-- NextAuth
-- Tailwind CSS
-- Jest
-- ESlint
-- Prettier
-- Husky
-- Lint-Staged
-- Github Actions
-- VSCode extensions
+### Database
+1. Duplicate `env.example` and `.env.test.example` and rename to `.env` and `.env.test`
+2. run `docker-compose up -d`
 
-## Getting Started
+<details>
+<summary>You haven't installed docker and docker-compose on your system?</summary>
 
-First, run the development server:
+  <a href="https://docs.docker.com/compose/install/">Here's an installation guide</a>
+  
+You'll only need these commands when using docker-compose:
+```bash
+# start running containers
+docker-compose up -d
 
+# shut-down running containers
+docker-compose down
+
+# list running containers
+docker-compose ps
 ```
-npm run dev
-# or
-yarn dev
+
+</details>
+
+
+### Code Climate (for code quality check)
+Create a <a href="https://codeclimate.com/quality/pricing/">free code climate account</a> and add the `CODE_CLIMATE_TEST_REPORTER_ID` to your github repo settings.
+
+<details>
+<summary>Screenshot</summary>
+<img width="1114" alt="image" src="https://user-images.githubusercontent.com/98182227/160672909-f596095f-7820-4b39-9260-0582d117287d.png">
+</details>
+
+## Development workflow
+
+**Default setup:**
+1. `npm run dev`
+2. open `localhost:3000`
+
+**Test Driven Development:**
+
+Recommended workflow when writing code for `./business-logic`.
+
+1. `npm run test`
+2. in chrome open: `chrome://inspect` and click on the remote target URL. This will open a console with your test process.
+3. add `debugger` statement in your code
+4. tests will be re-run once you save a file
+
+## Run tests
+```
+npm run test
 ```
 
-Open http://localhost:3000 with your browser to see the result.
+Optionally, you can add a name pattern of the file name:
+```
+npm run test User
+```
 
-You can start editing the page by modifying pages/index.tsx. The page auto-updates as you edit the file.
-
-The pages/api directory is mapped to /api/\*. Files in this directory are treated as API routes instead of React pages.
+**Check test coverage:**
+1. `npm run test:coverage`
+2. open file `./coverage/lcov-report/index.html`
