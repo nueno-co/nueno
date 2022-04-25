@@ -55,7 +55,7 @@ export default function Shell(props: { children: ReactNode }) {
         ```
       */}
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-gray-800">
+        <Disclosure as="nav" className="bg-red-800">
           {({ open }) => (
             <>
               <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -74,8 +74,8 @@ export default function Shell(props: { children: ReactNode }) {
                             href={item.href}
                             className={classNames(
                               item.current
-                                ? "bg-gray-900 text-white"
-                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                ? "bg-red-900 text-white"
+                                : "text-gray-300 hover:bg-red-700 hover:text-white",
                               "px-3 py-2 rounded-md text-sm font-medium"
                             )}
                             aria-current={item.current ? "page" : undefined}>
@@ -89,7 +89,7 @@ export default function Shell(props: { children: ReactNode }) {
                     <div className="flex items-center ml-4 md:ml-6">
                       <button
                         type="button"
-                        className="p-1 text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        className="p-1 text-gray-300 bg-red-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="w-6 h-6" aria-hidden="true" />
                       </button>
@@ -97,7 +97,7 @@ export default function Shell(props: { children: ReactNode }) {
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
-                          <Menu.Button className="flex items-center max-w-xs text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                          <Menu.Button className="flex items-center max-w-xs text-sm bg-red-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-800 focus:ring-white">
                             <span className="sr-only">Open user menu</span>
                             <img className="w-8 h-8 rounded-full" src={user.imageUrl} alt="" />
                           </Menu.Button>
@@ -154,7 +154,7 @@ export default function Shell(props: { children: ReactNode }) {
                       href={item.href}
                       className={classNames(
                         item.current
-                          ? "bg-gray-900 text-white"
+                          ? "bg-red-900 text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white",
                         "block px-3 py-2 rounded-md text-base font-medium"
                       )}
@@ -163,7 +163,7 @@ export default function Shell(props: { children: ReactNode }) {
                     </Disclosure.Button>
                   ))}
                 </div>
-                <div className="pt-4 pb-3 border-t border-gray-700">
+                <div className="pt-4 pb-3 border-t border-red-700">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
                       <img className="w-10 h-10 rounded-full" src={user.imageUrl} alt="" />
@@ -174,7 +174,7 @@ export default function Shell(props: { children: ReactNode }) {
                     </div>
                     <button
                       type="button"
-                      className="flex-shrink-0 p-1 ml-auto text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                      className="flex-shrink-0 p-1 ml-auto text-gray-400 bg-red-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="w-6 h-6" aria-hidden="true" />
                     </button>
