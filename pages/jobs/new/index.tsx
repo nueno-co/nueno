@@ -33,7 +33,7 @@ export default function JobsNew() {
             <button
               type="button"
               onClick={submit}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
               Save & continue
             </button>
           </span>
@@ -55,7 +55,7 @@ export default function JobsNew() {
                         name="job-title"
                         type="text"
                         required
-                        className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm"
                         placeholder="Full-Stack Engineer"
                         value={title}
                         onInput={(e) => setTitle(e.currentTarget.value)}
@@ -72,7 +72,7 @@ export default function JobsNew() {
                         id="description"
                         name="description"
                         required
-                        className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm"
                         rows={8}
                         placeholder="Job description..."
                         value={description}
@@ -83,7 +83,7 @@ export default function JobsNew() {
                       <button
                         type="button"
                         onClick={submit}
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        className="inline-flex items-center px-4 py-2 mt-5 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm m hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                         Save & continue
                       </button>
                     </div>
