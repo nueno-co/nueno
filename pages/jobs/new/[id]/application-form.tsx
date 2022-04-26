@@ -13,14 +13,14 @@ export default function JobsNew() {
   const jobUid = asStringOrUndefined(router.query.id);
   const [fields, setFields] = useState([
     {
-      type: "short_text",
+      type: "SHORT_TEXT",
       label: "",
     },
   ]);
 
   function addField() {
     const newFields = [...fields];
-    newFields.push({ type: "short_text", label: "" });
+    newFields.push({ type: "SHORT_TEXT", label: "" });
     setFields(newFields);
   }
   function removeField(index) {

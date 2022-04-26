@@ -11,19 +11,45 @@ export default class ApplicationFormEntity {
         uid: params.jobUid,
       },
     });
-    if (!job) throw new NotFoundError("Not found");
-    if (!user) throw new NotFoundError("Not found");
+    if (!job) throw new NotFoundError("Job Not found");
+    if (!user) throw new NotFoundError("User Not found");
 
     params.fields.forEach((field) => {
-      prisma.field.create({
-        data: {
-          type: field.type,
-          label: field.label,
-          jobId: job.id,
-          companyId: user.companyId,
-        },
-      });
+      prisma.field
+        .create({
+          data: {
+            type: field.type,
+            label: field.label,
+            jobId: job.id,
+            companyId: user.companyId,
+          },
+        })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
     return { jobUid: params.jobUid };
+  }
+
+  async list(userId: number, jobId: number) {
+    const user = await new UserEntity().find(userId);
+
+    if (!user) throw new NotFoundError("User Not found");
+    console.log(user, jobId);
+
+    return prisma.field.findMany({
+      where: {
+        companyId: user.companyId,
+        jobId,
+      },
+      include: {
+        FieldValue: true,
+        FieldChoice: true,
+        Company: true,
+      },
+    });
   }
 }
