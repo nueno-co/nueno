@@ -2,7 +2,7 @@ import { ApplicationFormsCreateRequestParams } from "@api-contracts/application-
 import { DotsVerticalIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { BaseSyntheticEvent } from "react";
+import { useState, BaseSyntheticEvent } from "react";
 
 import { asStringOrUndefined } from "@helpers/type-safety";
 
@@ -11,16 +11,37 @@ import Shell from "@components/Shell";
 export default function JobsNew() {
   const router = useRouter();
   const jobUid = asStringOrUndefined(router.query.id);
+  const [fields, setFields] = useState([
+    {
+      type: "short_text",
+      label: "",
+    },
+  ]);
 
+  function addField() {
+    const newFields = [...fields];
+    newFields.push({ type: "short_text", label: "" });
+    setFields(newFields);
+  }
+  function removeField(index) {
+    const newFields = [...fields];
+    newFields.splice(index, 1);
+    setFields(newFields);
+  }
+  function updateField(value, index: int, key: string) {
+    const newFields = [...fields];
+    newFields[index][key] = value;
+    setFields(newFields);
+  }
   async function submit(e: BaseSyntheticEvent) {
     e.preventDefault();
     if (!jobUid) return;
 
     try {
-      const requestParams: ApplicationFormsCreateRequestParams = { jobUid, fields: [] };
+      const requestParams: ApplicationFormsCreateRequestParams = { jobUid, fields };
       await axios.post("/api/application-forms/create", requestParams);
 
-      router.push({ pathname: "/jobs/" });
+      // router.push({ pathname: "/jobs/" });
     } catch (e) {
       console.log(e);
     }
@@ -65,35 +86,52 @@ export default function JobsNew() {
                       <p className="text-md">Email</p>
                     </div>
                   </div>
-                  <div className="flex items-center">
-                    <DotsVerticalIcon className="w-5 h-5 text-gray-400 cursor-move" aria-hidden="true" />
-                    <div className="flex-auto p-2 bg-gray-100 rounded">
-                      <p className="text-sm font-semibold text-md">Type</p>
-                      <select
-                        defaultValue="short_text"
-                        className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm">
-                        <option value="short_text">Short text</option>
-                        <option value="long_text">Long text</option>
-                        <option value="checkbox">Yes/No</option>
-                        <option value="select">Select one</option>
-                        <option value="multi_select">Select multiple</option>
-                      </select>
-                      <p className="text-sm font-semibold text-md">Type</p>
-                      <input
-                        id="label"
-                        name="label"
-                        type="text"
-                        required
-                        className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm"
-                        placeholder="e. g. LinkedIn URL"
-                      />
+                  {fields.map((field, index) => (
+                    <div key={index}>
+                      <div className="flex items-center">
+                        <DotsVerticalIcon className="w-5 h-5 text-gray-400 cursor-move" aria-hidden="true" />
+                        <div className="flex-auto p-2 bg-gray-100 rounded">
+                          <p className="text-sm font-semibold text-md">Type</p>
+                          <select
+                            value={field.type}
+                            onChange={(e) => updateField(e.target.value, index, "type")}
+                            className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                            <option value="short_text">Short text</option>
+                            <option value="long_text">Long text</option>
+                            <option value="checkbox">Yes/No</option>
+                            <option value="select">Select one</option>
+                            <option value="multi_select">Select multiple</option>
+                          </select>
+                          <p className="text-sm font-semibold text-md">Label</p>
+                          <input
+                            id="label"
+                            name="label"
+                            type="text"
+                            value={field.label}
+                            onChange={(e) => updateField(e.target.value, index, "label")}
+                            required
+                            className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                            placeholder="e. g. LinkedIn URL"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        {index > 0 && (
+                          <a
+                            href="#"
+                            className="ml-5 text-sm font-bold text-red-700"
+                            onClick={() => removeField()}>
+                            X Remove
+                          </a>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  ))}
                   <div>
                     <button
                       type="button"
-                      onClick={submit}
-                      className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                      onClick={addField}
+                      className="inline-flex items-center px-4 py-2 mt-4 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                       Add field
                     </button>
                   </div>
