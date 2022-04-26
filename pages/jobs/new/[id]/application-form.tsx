@@ -96,11 +96,11 @@ export default function JobsNew() {
                             value={field.type}
                             onChange={(e) => updateField(e.target.value, index, "type")}
                             className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm">
-                            <option value="short_text">Short text</option>
-                            <option value="long_text">Long text</option>
-                            <option value="checkbox">Yes/No</option>
-                            <option value="select">Select one</option>
-                            <option value="multi_select">Select multiple</option>
+                            <option value="SHORT_TEXT">Short text</option>
+                            <option value="LONG_TEXT">Long text</option>
+                            <option value="CHECKBOX">Yes/No</option>
+                            <option value="SELECT">Select one</option>
+                            <option value="MULTI_SELECT">Select multiple</option>
                           </select>
                           <p className="text-sm font-semibold text-md">Label</p>
                           <input
