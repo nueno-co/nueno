@@ -55,7 +55,7 @@ describe("ApplicationForm", () => {
         fields: [
           {
             type: "SHORT_TEXT",
-            label: "Github user URL",
+            label: "Github user URLL",
           },
         ],
         jobUid: job.uid,
@@ -84,7 +84,7 @@ describe("ApplicationForm", () => {
         fields: [
           {
             type: "SHORT_TEXT",
-            label: "Github user URL",
+            label: "Github user URLLL",
           },
           {
             type: "LONG_TEXT",
@@ -97,7 +97,7 @@ describe("ApplicationForm", () => {
       const entity = new ApplicationFormEntity();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const result = await entity.create(params, user.id);
-      const fieldsList = await entity.list(user.id, job.id);
+      const fieldsList = await entity.list(user.id, job.uid);
 
       expect(fieldsList.length).toBe(2);
     });
@@ -115,17 +115,17 @@ describe("ApplicationForm", () => {
       const entity = new ApplicationFormEntity();
 
       await expect(async () => {
-        await entity.list(nonExistingUserId, job.id);
+        await entity.list(nonExistingUserId, job.uid);
       }).rejects.toThrowError("User Not found");
     });
     it("throws error if Job was not found", async () => {
       const { user } = await minimalSetup();
 
-      const nonExistingJobId = 999999;
+      const nonExistingJobUid = "ds43dsf999";
       const entity = new ApplicationFormEntity();
 
       await expect(async () => {
-        await entity.list(user.id, nonExistingJobId);
+        await entity.list(user.id, nonExistingJobUid);
       }).rejects.toThrowError("Job Not found");
     });
   });

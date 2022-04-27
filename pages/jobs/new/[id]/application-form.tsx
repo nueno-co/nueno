@@ -1,4 +1,3 @@
-import { ApplicationFormsCreateRequestParams } from "@api-contracts/application-forms/create";
 import { DotsVerticalIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -8,6 +7,9 @@ import { asStringOrUndefined } from "@helpers/type-safety";
 
 import Shell from "@components/Shell";
 
+type Attributes = { type: string; label: string; required: boolean }[];
+type FieldAttributes = { fields: Attributes; jobUid: string };
+
 export default function JobsNew() {
   const router = useRouter();
   const jobUid = asStringOrUndefined(router.query.id);
@@ -15,22 +17,23 @@ export default function JobsNew() {
     {
       type: "SHORT_TEXT",
       label: "",
+      required: false,
     },
   ]);
 
   function addField() {
     const newFields = [...fields];
-    newFields.push({ type: "SHORT_TEXT", label: "" });
+    newFields.push({ type: "SHORT_TEXT", label: "", required: false });
     setFields(newFields);
   }
-  function removeField(index) {
+  function removeField(index: number) {
     const newFields = [...fields];
     newFields.splice(index, 1);
     setFields(newFields);
   }
-  function updateField(value, index: int, key: string) {
+  function updateField(value: string, index: number, key: string) {
     const newFields = [...fields];
-    newFields[index][key] = value;
+    newFields[index] = { ...newFields[index], [key]: value };
     setFields(newFields);
   }
   async function submit(e: BaseSyntheticEvent) {
@@ -38,10 +41,10 @@ export default function JobsNew() {
     if (!jobUid) return;
 
     try {
-      const requestParams: ApplicationFormsCreateRequestParams = { jobUid, fields };
+      const requestParams: FieldAttributes = { jobUid, fields };
       await axios.post("/api/application-forms/create", requestParams);
 
-      // router.push({ pathname: "/jobs/" });
+      router.push({ pathname: "/jobs/" });
     } catch (e) {
       console.log(e);
     }
@@ -120,7 +123,7 @@ export default function JobsNew() {
                           <a
                             href="#"
                             className="ml-5 text-sm font-bold text-red-700"
-                            onClick={() => removeField()}>
+                            onClick={() => removeField(index)}>
                             X Remove
                           </a>
                         )}
