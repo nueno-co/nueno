@@ -1,5 +1,5 @@
 import ApplicationFormEntity from "@business-logic/ApplicationForm";
-import { ApplicationForm } from "@prisma/client";
+import { Field, Job } from "@prisma/client";
 
 import prisma from "@helpers/prisma";
 import { createJob } from "@helpers/tests/createJob";
@@ -15,11 +15,11 @@ describe("ApplicationForm", () => {
     it("creates applicationForm", async () => {
       const { user } = await minimalSetup();
       await Promise.all([createJob(user.companyId)]);
-      const job = prisma.job.findFirst({
+      const job = (await prisma.job.findFirst({
         where: {
           companyId: user.companyId,
         },
-      });
+      })) as Job;
 
       const requestParams = {
         fields: [
@@ -37,31 +37,30 @@ describe("ApplicationForm", () => {
 
       const applicationForm = (await prisma.field.findFirst({
         where: { jobId: job.id },
-      })) as ApplicationForm;
-
+      })) as Field;
       expect(applicationForm.label).toBe(requestParams.fields[0].label);
       expect(applicationForm.type).toBe(requestParams.fields[0].type);
     });
 
     it("throws error if user was not found", async () => {
       const { user } = await minimalSetup();
-      const job = prisma.job.findFirst({
+      await Promise.all([createJob(user.companyId)]);
+      const job = (await prisma.job.findFirst({
         where: {
           companyId: user.companyId,
         },
-      });
+      })) as Job;
 
       const requestParams = {
         fields: [
           {
             type: "SHORT_TEXT",
             label: "Github user URL",
-            jobId: job.id,
-            companyId: user.companyId,
           },
         ],
         jobUid: job.uid,
       };
+      console.log(job);
 
       const nonExistingUserId = 99999;
       const entity = new ApplicationFormEntity();
@@ -75,44 +74,43 @@ describe("ApplicationForm", () => {
   describe("#list", () => {
     it("lists all applicationForms of a job", async () => {
       const { user } = await minimalSetup();
-      await Promise(createJob(user.companyId));
-      const job = prisma.job.findFirst({
+      await Promise.all([createJob(user.companyId)]);
+      const job = (await prisma.job.findFirst({
         where: {
           companyId: user.companyId,
         },
-      });
+      })) as Job;
 
-      const fields = [
-        {
-          type: "SHORT_TEXT",
-          label: "Github user URL",
-          jobId: job.id,
-          companyId: user.companyId,
-        },
-        {
-          type: "LONG_TEXT",
-          label: "Describe Yourself",
-          jobId: job.id,
-          companyId: user.companyId,
-        },
-      ];
+      const params = {
+        fields: [
+          {
+            type: "SHORT_TEXT",
+            label: "Github user URL",
+          },
+          {
+            type: "LONG_TEXT",
+            label: "Describe Yourself",
+          },
+        ],
+        jobUid: job.uid,
+      };
 
       const entity = new ApplicationFormEntity();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const result = await entity.create(fields, user.id);
-      const fieldslist = await entity.list(user.id, job.id);
+      const result = await entity.create(params, user.id);
+      const fieldsList = await entity.list(user.id, job.id);
 
-      expect(fieldslist.length).toBe(2);
+      expect(fieldsList.length).toBe(2);
     });
 
     it("throws error if user was not found", async () => {
       const { user } = await minimalSetup();
-      await Promise(createJob(user.companyId));
-      const job = prisma.job.findFirst({
+      await Promise.all([createJob(user.companyId)]);
+      const job = (await prisma.job.findFirst({
         where: {
           companyId: user.companyId,
         },
-      });
+      })) as Job;
 
       const nonExistingUserId = 99999;
       const entity = new ApplicationFormEntity();

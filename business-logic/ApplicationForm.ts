@@ -38,7 +38,7 @@ export default class ApplicationFormEntity {
     const user = await new UserEntity().find(userId);
     const job = await prisma.job.findUnique({
       where: {
-        uid: params.jobUid,
+        id: jobId,
       },
     });
 
