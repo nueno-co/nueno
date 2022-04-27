@@ -44,7 +44,6 @@ export default class ApplicationFormEntity {
 
     if (!user) throw new NotFoundError("User Not found");
     if (!job) throw new NotFoundError("Job Not found");
-    console.log(user, jobId);
 
     return prisma.field.findMany({
       where: {

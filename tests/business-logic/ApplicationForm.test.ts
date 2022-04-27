@@ -60,7 +60,6 @@ describe("ApplicationForm", () => {
         ],
         jobUid: job.uid,
       };
-      console.log(job);
 
       const nonExistingUserId = 99999;
       const entity = new ApplicationFormEntity();
