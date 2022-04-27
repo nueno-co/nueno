@@ -32,4 +32,11 @@ export default class JobEntity {
       },
     });
   }
+  async find(jobUid: string) {
+    return prisma.job.findFirst({
+      where: {
+        uid: jobUid,
+      },
+    });
+  }
 }

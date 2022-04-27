@@ -44,34 +44,44 @@ export default function Login({ csrfToken }: ServerSideProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="csrfToken" type="hidden" defaultValue={csrfToken || undefined} hidden />
-      <input
-        id="email"
-        name="email"
-        type="email"
-        placeholder="email"
-        required
-        value={email}
-        onInput={(e) => setEmail(e.currentTarget.value)}
-        className="block border border-neutral-300 focus:ring-neutral-900"
-      />
-      <input
-        id="password"
-        name="password"
-        type="password"
-        placeholder="password"
-        autoComplete="current-password"
-        required
-        value={password}
-        onInput={(e) => setPassword(e.currentTarget.value)}
-        className="block border border-neutral-300 focus:ring-neutral-900"
-      />
+    <div className="flex items-center justify-center w-screen h-screen bg-secondary">
+      <div className="flex flex-col justify-center items-center min-h-[50vh] w-[50vw]">
+        <span className="mt-5 text-2xl font-bold text-center">Login</span>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col justify-start px-10 pb-5 pt-10 items-start min-h-[38vh] w-[30vw]  rounded-sm border-secondary bg-white shadow-md">
+          <input name="csrfToken" type="hidden" defaultValue={csrfToken || undefined} hidden />
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="email"
+            required
+            value={email}
+            onInput={(e) => setEmail(e.currentTarget.value)}
+            className="w-full px-3 py-2 mb-2 border rounded focus:outline-none focus:shadow-outline"
+          />
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onInput={(e) => setPassword(e.currentTarget.value)}
+            className="w-full px-3 py-2 mb-2 border rounded focus:outline-none focus:shadow-outline"
+          />
 
-      <button type="submit" disabled={isSubmitting} className="p-1 text-white bg-blue-800">
-        SIGN IN
-      </button>
-    </form>
+          <button
+            type="submit"
+            className={`w-full items-center px-4 py-3 mt-5 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm m hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500`}
+            disabled={isSubmitting}>
+            {"SIGN IN"}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 
