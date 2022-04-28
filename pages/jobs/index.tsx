@@ -38,7 +38,7 @@ export default function Jobs() {
         {jobs?.map((job) => {
           return (
             <div key={job.uid}>
-              <a className="block p-8 bg-white border border-gray-200 shadow-xl rounded-xl" href="">
+              <a className="block p-8 m-6 bg-white border border-gray-200 shadow-sm rounded-xl" href="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-10 h-10 text-indigo-600"
@@ -57,7 +57,7 @@ export default function Jobs() {
 
                 <h3 className="mt-3 text-xl font-bold text-gray-800">{job.title}</h3>
 
-                <p className="mt-4 text-sm text-gray-600">{job.description}</p>
+                <p className="mt-4 text-sm text-gray-500">{job.description}</p>
               </a>
             </div>
           );
