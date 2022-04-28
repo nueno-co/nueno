@@ -5,6 +5,7 @@
     "dev": "next dev",
     "dev:debug": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
+    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
     "check-types": "tsc --noemit",
