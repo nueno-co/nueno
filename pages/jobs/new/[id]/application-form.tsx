@@ -36,6 +36,19 @@ export default function JobsNew() {
     newFields[index] = { ...newFields[index], [key]: value };
     setFields(newFields);
   }
+  //drag and drop in functions
+  function allowDrop(e: BaseSyntheticEvent) {
+    e.preventDefault();
+  }
+  function drap(e: BaseSyntheticEvent) {
+    e.dataTransfer.setData("text", e.target.id);
+  }
+  function drop(e: BaseSyntheticEvent) {
+    e.preventDefault();
+    const data = e.dataTransfer.getData("text");
+    e.target.appendChild(document.getElementById(data));
+  }
+
   async function submit(e: BaseSyntheticEvent) {
     e.preventDefault();
     if (!jobUid) return;
@@ -90,45 +103,54 @@ export default function JobsNew() {
                     </div>
                   </div>
                   {fields.map((field, index) => (
-                    <div key={index}>
-                      <div className="flex items-center">
-                        <DotsVerticalIcon className="w-5 h-5 text-gray-400 cursor-move" aria-hidden="true" />
-                        <div className="flex-auto p-2 bg-gray-100 rounded">
-                          <p className="text-sm font-semibold text-md">Type</p>
-                          <select
-                            value={field.type}
-                            onChange={(e) => updateField(e.target.value, index, "type")}
-                            className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm">
-                            <option value="SHORT_TEXT">Short text</option>
-                            <option value="LONG_TEXT">Long text</option>
-                            <option value="CHECKBOX">Yes/No</option>
-                            <option value="SELECT">Select one</option>
-                            <option value="MULTI_SELECT">Select multiple</option>
-                          </select>
-                          <p className="text-sm font-semibold text-md">Label</p>
-                          <input
-                            id="label"
-                            name="label"
-                            type="text"
-                            value={field.label}
-                            onChange={(e) => updateField(e.target.value, index, "label")}
-                            required
-                            className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm"
-                            placeholder="e. g. LinkedIn URL"
-                          />
+                    <>
+                      <div onDrop={(e) => drop(e)} onDragOver={(e) => allowDrop(e)}></div>
+                      <div onDrop={(e) => drop(e)} onDragOver={(e) => allowDrop(e)}>
+                        <div key={index} draggable="true" onDragStart={(e) => drag(e)} id={index}>
+                          <div className="flex items-center">
+                            <DotsVerticalIcon
+                              className="w-5 h-5 text-gray-400 cursor-move"
+                              aria-hidden="true"
+                            />
+                            <div className="flex-auto p-2 bg-gray-100 rounded">
+                              <p className="text-sm font-semibold text-md">Type</p>
+                              <select
+                                value={field.type}
+                                onChange={(e) => updateField(e.target.value, index, "type")}
+                                className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                                <option value="SHORT_TEXT">Short text</option>
+                                <option value="LONG_TEXT">Long text</option>
+                                <option value="CHECKBOX">Yes/No</option>
+                                <option value="SELECT">Select one</option>
+                                <option value="MULTI_SELECT">Select multiple</option>
+                              </select>
+                              <p className="text-sm font-semibold text-md">Label</p>
+                              <input
+                                id="label"
+                                name="label"
+                                type="text"
+                                value={field.label}
+                                onChange={(e) => updateField(e.target.value, index, "label")}
+                                required
+                                className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                                placeholder="e. g. LinkedIn URL"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            {index > 0 && (
+                              <a
+                                href="#"
+                                className="ml-5 text-sm font-bold text-red-700"
+                                onClick={() => removeField(index)}>
+                                X Remove
+                              </a>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div>
-                        {index > 0 && (
-                          <a
-                            href="#"
-                            className="ml-5 text-sm font-bold text-red-700"
-                            onClick={() => removeField(index)}>
-                            X Remove
-                          </a>
-                        )}
-                      </div>
-                    </div>
+                      <div onDrop={(e) => drop(e)} onDragOver={(e) => allowDrop(e)}></div>
+                    </>
                   ))}
                   <div>
                     <button
