@@ -10,7 +10,7 @@ export default function JobsNew() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  async function submit(e: BaseSyntheticEvent) {
+  async function handleSubmit(e: BaseSyntheticEvent) {
     e.preventDefault();
 
     try {
@@ -32,7 +32,7 @@ export default function JobsNew() {
           <span className="sm:ml-3">
             <button
               type="button"
-              onClick={submit}
+              onClick={handleSubmit}
               className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               Save & continue
             </button>
@@ -43,7 +43,7 @@ export default function JobsNew() {
         <div>
           <div className="md:grid md:grid-cols-3 md:gap-6">
             <div className="mt-5 md:mt-0 md:col-span-2">
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
                   <div className="px-4 py-5 bg-white sm:p-6">
                     <div>
@@ -81,9 +81,8 @@ export default function JobsNew() {
                     </div>
                     <div>
                       <button
-                        type="button"
-                        onClick={submit}
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        type="submit"
+                        className="inline-flex items-center px-4 py-2 mt-4 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Save & continue
                       </button>
                     </div>

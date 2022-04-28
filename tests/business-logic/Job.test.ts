@@ -69,4 +69,19 @@ describe("Job", () => {
       }).rejects.toThrowError("Not found");
     });
   });
+  describe("#find", () => {
+    it("fetch the current created job", async () => {
+      const { user } = await minimalSetup();
+
+      const entity = new JobEntity();
+      const data = {
+        title: "Software Engineer",
+        description: "You write code.",
+      };
+      const job = await entity.create(data, user.id);
+      const result = await entity.find(job.uid);
+
+      expect(result?.title).toBe(data.title);
+    });
+  });
 });
