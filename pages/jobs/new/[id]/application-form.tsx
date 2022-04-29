@@ -1,7 +1,7 @@
 import { DotsVerticalIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState, BaseSyntheticEvent } from "react";
+import { useState, useEffect, BaseSyntheticEvent } from "react";
 
 import { asStringOrUndefined } from "@helpers/type-safety";
 
@@ -20,6 +20,9 @@ export default function JobsNew() {
       required: false,
     },
   ]);
+  useEffect(() => {
+    list(document.getElementById("sortlist"));
+  });
 
   function addField() {
     const newFields = [...fields];
@@ -36,17 +39,74 @@ export default function JobsNew() {
     newFields[index] = { ...newFields[index], [key]: value };
     setFields(newFields);
   }
-  //drag and drop in functions
-  function allowDrop(e: BaseSyntheticEvent) {
-    e.preventDefault();
-  }
-  function drap(e: BaseSyntheticEvent) {
-    e.dataTransfer.setData("text", e.target.id);
-  }
-  function drop(e: BaseSyntheticEvent) {
-    e.preventDefault();
-    const data = e.dataTransfer.getData("text");
-    e.target.appendChild(document.getElementById(data));
+  function list(target) {
+    // (A) SET CSS + GET ALL LIST ITEMS
+    target.classList.add("list");
+    const items = target.getElementsByClassName("draggable");
+    let current = null;
+
+    // (B) MAKE ITEMS DRAGGABLE + SORTABLE
+    for (const i of items) {
+      // (B1) ATTACH DRAGGABLE
+      i.draggable = true;
+
+      // (B2) DRAG START - YELLOW HIGHLIGHT DROPZONES
+      i.ondragstart = () => {
+        current = i;
+        for (const it of items) {
+          if (it != current) {
+            it.classList.add("hint");
+          }
+        }
+      };
+
+      // (B3) DRAG ENTER - RED HIGHLIGHT DROPZONE
+      i.ondragenter = () => {
+        if (i != current) {
+          i.classList.add("active");
+        }
+      };
+
+      // (B4) DRAG LEAVE - REMOVE RED HIGHLIGHT
+      i.ondragleave = () => {
+        i.classList.remove("active");
+      };
+
+      // (B5) DRAG END - REMOVE ALL HIGHLIGHTS
+      i.ondragend = () => {
+        for (const it of items) {
+          it.classList.remove("hint");
+          it.classList.remove("active");
+        }
+      };
+
+      // (B6) DRAG OVER - PREVENT THE DEFAULT "DROP", SO WE CAN DO OUR OWN
+      i.ondragover = (evt) => {
+        evt.preventDefault();
+      };
+
+      // (B7) ON DROP - DO SOMETHING
+      i.ondrop = (evt) => {
+        evt.preventDefault();
+        if (i != current) {
+          let currentpos = 0,
+            droppedpos = 0;
+          for (let it = 0; it < items.length; it++) {
+            if (current == items[it]) {
+              currentpos = it;
+            }
+            if (i == items[it]) {
+              droppedpos = it;
+            }
+          }
+          if (currentpos < droppedpos) {
+            i.parentNode.insertBefore(current, i.nextSibling);
+          } else {
+            i.parentNode.insertBefore(current, i);
+          }
+        }
+      };
+    }
   }
 
   async function submit(e: BaseSyntheticEvent) {
@@ -102,56 +162,52 @@ export default function JobsNew() {
                       <p className="text-md">Email</p>
                     </div>
                   </div>
-                  {fields.map((field, index) => (
-                    <>
-                      <div onDrop={(e) => drop(e)} onDragOver={(e) => allowDrop(e)}></div>
-                      <div onDrop={(e) => drop(e)} onDragOver={(e) => allowDrop(e)}>
-                        <div key={index} draggable="true" onDragStart={(e) => drag(e)} id={index}>
-                          <div className="flex items-center">
-                            <DotsVerticalIcon
-                              className="w-5 h-5 text-gray-400 cursor-move"
-                              aria-hidden="true"
+                  <div className="" id="sortlist">
+                    {fields.map((field, index) => (
+                      <div id={index} key={index} className="pb-2 draggable">
+                        <div className="flex items-center">
+                          <DotsVerticalIcon
+                            className="w-5 h-5 text-gray-400 cursor-move"
+                            aria-hidden="true"
+                          />
+                          <div className="flex-auto p-2 bg-gray-100 rounded">
+                            <p className="text-sm font-semibold text-md">Type</p>
+                            <select
+                              value={field.type}
+                              onChange={(e) => updateField(e.target.value, index, "type")}
+                              className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                              <option value="SHORT_TEXT">Short text</option>
+                              <option value="LONG_TEXT">Long text</option>
+                              <option value="CHECKBOX">Yes/No</option>
+                              <option value="SELECT">Select one</option>
+                              <option value="MULTI_SELECT">Select multiple</option>
+                            </select>
+                            <p className="text-sm font-semibold text-md">Label</p>
+                            <input
+                              id="label"
+                              name="label"
+                              type="text"
+                              value={field.label}
+                              onChange={(e) => updateField(e.target.value, index, "label")}
+                              required
+                              className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                              placeholder="e. g. LinkedIn URL"
                             />
-                            <div className="flex-auto p-2 bg-gray-100 rounded">
-                              <p className="text-sm font-semibold text-md">Type</p>
-                              <select
-                                value={field.type}
-                                onChange={(e) => updateField(e.target.value, index, "type")}
-                                className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm">
-                                <option value="SHORT_TEXT">Short text</option>
-                                <option value="LONG_TEXT">Long text</option>
-                                <option value="CHECKBOX">Yes/No</option>
-                                <option value="SELECT">Select one</option>
-                                <option value="MULTI_SELECT">Select multiple</option>
-                              </select>
-                              <p className="text-sm font-semibold text-md">Label</p>
-                              <input
-                                id="label"
-                                name="label"
-                                type="text"
-                                value={field.label}
-                                onChange={(e) => updateField(e.target.value, index, "label")}
-                                required
-                                className="block w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 sm:text-sm"
-                                placeholder="e. g. LinkedIn URL"
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            {index > 0 && (
-                              <a
-                                href="#"
-                                className="ml-5 text-sm font-bold text-red-700"
-                                onClick={() => removeField(index)}>
-                                X Remove
-                              </a>
-                            )}
                           </div>
                         </div>
+                        <div>
+                          {index > 0 && (
+                            <a
+                              href="#"
+                              className="ml-5 text-sm font-bold text-red-700"
+                              onClick={() => removeField(index)}>
+                              X Remove
+                            </a>
+                          )}
+                        </div>
                       </div>
-                      <div onDrop={(e) => drop(e)} onDragOver={(e) => allowDrop(e)}></div>
-                    </>
-                  ))}
+                    ))}
+                  </div>
                   <div>
                     <button
                       type="button"
