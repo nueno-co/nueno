@@ -19,6 +19,8 @@ const customJestConfig = {
   },
   testEnvironment: "jest-environment-jsdom",
   collectCoverageFrom: ["business-logic/**"],
+  verbose: true,
+  testTimeout: 1000000,
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
