@@ -3,3 +3,4 @@ tasks:
     command: docker-compose up -d
 
   - name: Dev
+    command: npm i
