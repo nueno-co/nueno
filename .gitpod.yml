@@ -1,0 +1,4 @@
+tasks:
+  - name: Start
+    init: docker-compose up -d
+    command: npm run dev
