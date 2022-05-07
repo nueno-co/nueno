@@ -1,7 +1,5 @@
 tasks:
-  - name: Start next dev
-    init: npm i
-    command: npm run dev
-
-  - name: Start docker
+  - name: Docker
     command: docker-compose up -d
+
+  - name: Dev
