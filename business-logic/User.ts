@@ -13,6 +13,10 @@ export default class UserEntity {
     });
   }
 
+  async findAll() {
+    return prisma.user.findMany({});
+  }
+
   async create(params: SignupRequestParams) {
     const { name, email, password } = params;
     const userEmail = email.toLowerCase();
@@ -26,7 +30,7 @@ export default class UserEntity {
     });
 
     const hashedPassword = await hashPassword(password);
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         name,
         email: userEmail,
@@ -35,7 +39,7 @@ export default class UserEntity {
       },
     });
 
-    return { message: "User created" };
+    return {user, message: "User created" };
   }
 
   private async validateCreate(email: string, password: string) {
