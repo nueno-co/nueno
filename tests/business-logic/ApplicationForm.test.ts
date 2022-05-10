@@ -26,6 +26,7 @@ describe("ApplicationForm", () => {
           {
             type: "SHORT_TEXT",
             label: "Github user URL",
+            order: 0,
           },
         ],
         jobUid: job.uid,
@@ -56,6 +57,7 @@ describe("ApplicationForm", () => {
           {
             type: "SHORT_TEXT",
             label: "Github user URLL",
+            order: 1,
           },
         ],
         jobUid: job.uid,
@@ -85,10 +87,12 @@ describe("ApplicationForm", () => {
           {
             type: "SHORT_TEXT",
             label: "Github user URLLL",
+            order: 0,
           },
           {
             type: "LONG_TEXT",
             label: "Describe Yourself",
+            order: 1,
           },
         ],
         jobUid: job.uid,
