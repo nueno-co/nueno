@@ -16,6 +16,7 @@ export default class ApplicationFormEntity {
         data: {
           type: attribute.type,
           label: attribute.label,
+          order: attribute.order,
           jobId: job.id,
           companyId: user.companyId,
         },

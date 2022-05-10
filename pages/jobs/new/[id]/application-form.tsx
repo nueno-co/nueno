@@ -7,7 +7,7 @@ import { asStringOrUndefined } from "@helpers/type-safety";
 
 import Shell from "@components/Shell";
 
-type Attributes = { type: string; label: string; required: boolean }[];
+type Attributes = { type: string; label: string; required: boolean; order: number }[];
 type FieldAttributes = { fields: Attributes; jobUid: string };
 
 export default function JobsNew() {
@@ -18,6 +18,7 @@ export default function JobsNew() {
       type: "SHORT_TEXT",
       label: "",
       required: false,
+      order: 0,
     },
   ]);
   useEffect(() => {
@@ -26,7 +27,9 @@ export default function JobsNew() {
 
   function addField() {
     const newFields = [...fields];
-    newFields.push({ type: "SHORT_TEXT", label: "", required: false });
+    console.log("Number of fields:", newFields.length);
+
+    newFields.push({ type: "SHORT_TEXT", label: "", required: false, order: newFields.length });
     setFields(newFields);
   }
   function removeField(index: number) {
@@ -34,26 +37,41 @@ export default function JobsNew() {
     newFields.splice(index, 1);
     setFields(newFields);
   }
-  function updateField(value: string, index: number, key: string) {
+  function updateField(value: string | number, index: number, key: string) {
     const newFields = [...fields];
     newFields[index] = { ...newFields[index], [key]: value };
     setFields(newFields);
   }
-  function list(target) {
+  function sort(target: HTMLElement | null) {
+    const items = target?.getElementsByClassName("draggable") ?? [];
+    let index = 0;
+    const newFields = [...fields];
+    for (let i = 0; i <= items.length; i++) {
+      const id: string = items[i].getAttribute("id") ?? "";
+      newFields[parseInt(id)] = { ...newFields[parseInt(id)], ["order"]: index };
+      index++;
+    }
+    setFields(newFields);
+  }
+  function list(target: HTMLElement | null) {
     // (A) SET CSS + GET ALL LIST ITEMS
-    target.classList.add("list");
-    const items = target.getElementsByClassName("draggable");
-    let current = null;
+    target?.classList?.add("list");
+    const items = Array.from(target?.getElementsByClassName("draggable") as HTMLCollectionOf<HTMLElement>);
+    let current: HTMLElement;
 
     // (B) MAKE ITEMS DRAGGABLE + SORTABLE
-    for (const i of items) {
+    for (let j = 0; j < items.length; j++) {
+      const i = items[j];
+      console.log("i:", i);
+
       // (B1) ATTACH DRAGGABLE
       i.draggable = true;
 
       // (B2) DRAG START - YELLOW HIGHLIGHT DROPZONES
       i.ondragstart = () => {
         current = i;
-        for (const it of items) {
+        for (let k = 0; k <= items.length; k++) {
+          const it = items[k];
           if (it != current) {
             it.classList.add("hint");
           }
@@ -74,7 +92,8 @@ export default function JobsNew() {
 
       // (B5) DRAG END - REMOVE ALL HIGHLIGHTS
       i.ondragend = () => {
-        for (const it of items) {
+        for (let k = 0; k <= items.length; k++) {
+          const it = items[k];
           it.classList.remove("hint");
           it.classList.remove("active");
         }
@@ -100,11 +119,12 @@ export default function JobsNew() {
             }
           }
           if (currentpos < droppedpos) {
-            i.parentNode.insertBefore(current, i.nextSibling);
+            i.parentNode?.insertBefore(current, i.nextSibling);
           } else {
-            i.parentNode.insertBefore(current, i);
+            i.parentNode?.insertBefore(current, i);
           }
         }
+        sort(target);
       };
     }
   }
@@ -164,7 +184,7 @@ export default function JobsNew() {
                   </div>
                   <div className="" id="sortlist">
                     {fields.map((field, index) => (
-                      <div id={index} key={index} className="pb-2 draggable">
+                      <div id={index.toString()} key={index} className="pb-2 draggable">
                         <div className="flex items-center">
                           <DotsVerticalIcon
                             className="w-5 h-5 text-gray-400 cursor-move"
