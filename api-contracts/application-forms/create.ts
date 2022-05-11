@@ -11,6 +11,7 @@ export type ApplicationFormsCreateResponseParams = {
 
 type FieldAttributes = {
   label: string;
+  order: number;
   required: boolean;
   type: FieldType;
   fieldChoices?: FieldChoiceAttributes[];

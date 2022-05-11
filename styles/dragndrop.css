@@ -1,0 +1,15 @@
+/* (B) DRAG-AND-DROP HINT */
+.list div.hint {
+  border: 1px solid #ffc49a;
+  border-radius: 0.25rem;
+  background: #fff9e6;
+  padding: 10px 10px;
+  margin:5px 0px;
+}
+.list div.active {
+  border-radius: 0.25rem;
+  border: 1px solid #ffa5a5;
+  background:#dc26263b;
+  padding: 10px 10px;
+  margin:5px 0px;
+}

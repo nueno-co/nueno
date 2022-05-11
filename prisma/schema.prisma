@@ -59,6 +59,7 @@ model Field {
   label       String
   type        FieldType     @default(SHORT_TEXT)
   required    Boolean       @default(false)
+  order       Int           @default(0)
   jobId       Int
   Job         Job           @relation(fields: [jobId], references: [id], onDelete: Cascade)
   FieldValue  FieldValue[]
