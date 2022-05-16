@@ -8,7 +8,10 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=DB_DEVELOPMENT_DOCKER
     ports:
-      - 5432:5432
+      # NOTE: We are using a different port here because
+      # a lot of devs already have a running process on the "5432" port
+      # which leads to conflicts that are not fun to debug
+      - 54321:5432
 
   postgres_test:
     image: postgres:13.1
@@ -17,6 +20,4 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=DB_TEST_DOCKER
     ports:
-      # NOTE: We are using a different port here because
-      # we already run the postgres_development on the default "5432" port
-      - 54321:5432
+      - 54322:5432

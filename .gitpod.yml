@@ -1,0 +1,7 @@
+tasks:
+  - name: Docker
+    command: docker-compose up -d
+
+  - name: Dev
+    init: bash setup-dev-environment
+    command: npm install && npx prisma db push
