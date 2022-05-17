@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import ImageComponent from "../../components/Image";
+import Input from "../../components/Input";
 import Logo from "../../public/nueno-logo-black.svg";
 import styles from "../../styles/Auth.module.css";
 
@@ -41,6 +42,7 @@ export default function Signup() {
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
+    console.log(user);
 
     if (isSubmitting) {
       return;
@@ -91,45 +93,43 @@ export default function Signup() {
               <label htmlFor="email-address" className="capitalize sr-only">
                 Full Name
               </label>
-              <input
+
+              <Input
                 name="name"
-                type="name"
-                autoComplete="name"
                 value={name}
                 onChange={onChange}
+                required={true}
+                autoComplete="name"
                 placeholder="John Doe"
-                required
-                className="relative block w-full h-12 px-3 py-2 text-gray-900 placeholder-gray-500 capitalize border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                clasName="capitalize"
               />
             </div>
             <div>
               <label htmlFor="email-address" className="capitalize sr-only">
                 Email address
               </label>
-              <input
-                name="email"
+              <Input
                 type="email"
-                autoComplete="email"
+                name="email"
                 value={email}
+                autoComplete="email"
                 onChange={onChange}
                 placeholder="john@doe.com"
-                required
-                className="relative block w-full h-12 px-3 py-2 mt-5 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                required={true}
               />
             </div>
             <div>
               <label htmlFor="password" className="capitalize sr-only">
                 Password
               </label>
-              <input
+              <Input
                 name="password"
                 type="password"
-                autoComplete="current-password"
                 value={password}
+                autoComplete="current-password"
                 onChange={onChange}
                 placeholder="Password"
-                required
-                className="relative block w-full h-12 px-3 py-2 my-5 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                required={true}
               />
             </div>
           </div>

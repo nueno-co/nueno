@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { getSession } from "@helpers/auth";
 
 import ImageComponent from "../../components/Image";
+import Input from "../../components/Input";
 import Logo from "../../public/nueno-logo-black.svg";
 import styles from "../../styles/Auth.module.css";
 
@@ -93,30 +94,28 @@ export default function Login({ csrfToken }: ServerSideProps) {
               <label htmlFor="email-address" className="sr-only">
                 Email address
               </label>
-              <input
+              <Input
                 name="email"
                 type="email"
-                autoComplete="email"
-                required
                 value={email}
                 onChange={onChange}
-                className="relative block w-full h-12 px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="john@doe.com"
+                autoComplete="email"
+                required={true}
               />
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
-              <input
+              <Input
                 name="password"
                 type="password"
                 autoComplete="current-password"
-                required
                 value={password}
                 onChange={onChange}
-                className="relative block w-full h-12 px-3 py-2 my-5 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
+                required={true}
               />
             </div>
           </div>
