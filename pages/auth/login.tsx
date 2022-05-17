@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from "next";
 import { getCsrfToken, signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { getSession } from "@helpers/auth";
 
@@ -12,11 +12,28 @@ import styles from "../../styles/Auth.module.css";
 interface ServerSideProps {
   csrfToken: string;
 }
+
+interface UserProps {
+  email: string;
+  password: string;
+  isSubmitting: boolean;
+}
 export default function Login({ csrfToken }: ServerSideProps) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // User state
+  const [user, setUser] = useState<UserProps>({
+    email: "",
+    password: "",
+    isSubmitting: false,
+  });
+
+  // pulling out from user state
+  const { email, password, isSubmitting } = user;
+
+  // onChange event: setting the typed char to the input
+  const onChange = (e: { target: { name: string; value: string | boolean } }) =>
+    setUser({ ...user, [e.target.name]: e.target.value });
 
   const callbackUrl = typeof router.query?.callbackUrl === "string" ? router.query.callbackUrl : "/jobs";
 
@@ -27,7 +44,8 @@ export default function Login({ csrfToken }: ServerSideProps) {
       return;
     }
 
-    setIsSubmitting(true);
+    // Set isSubmitting to true
+    setUser({ ...user, isSubmitting: true });
 
     const response = await signIn<"credentials">("credentials", {
       redirect: false,
@@ -51,37 +69,35 @@ export default function Login({ csrfToken }: ServerSideProps) {
       <div
         className={`items-center justify-center hidden w-full h-screen lg:flex lg:w-1/2 ${styles.authStyles}`}>
         <div className="flex flex-col items-center justify-center text-white">
-          <h1 className="w-full my-5 text-4xl font-bold text-center md:w-4/4 lg:text-left lg:w-1/2 lg:text-5xl xl:text-7xl">
+          <h1 className="w-full my-5 text-4xl font-bold text-center md:w-4/4 lg:text-left lg:w-1/2 lg:text-6xl">
             Hiring platform for engineering leaders
           </h1>
-          <p className="w-1/2 text-3xl italic xl:text-5xl">
+          <p className="w-1/2 text-3xl italic lg:text-3xl">
             Own your pipeline, identify hidden talent and build your A-team.
           </p>
         </div>
       </div>
       <div className="flex items-center justify-center w-full h-screen lg:w-1/2">
-        {/* <form className="mt-8 space-y-6" onSubmit={handleSubmit}> */}
         <form className="w-full mx-10 mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <Image src={Logo} className="w-auto h-12 mx-auto" width={60} height={60} />
-            <h2 className="mt-6 text-xl font-bold text-center text-gray-900 md:text-4xl">
+            <h2 className="mt-6 text-xl font-bold text-center text-gray-900 md:text-2xl">
               Sign in to your account
             </h2>
           </div>
           <input name="csrfToken" type="hidden" defaultValue={csrfToken || undefined} hidden />
-          <div className="-space-y-px rounded-md shadow-sm">
+          <div className="m-auto -space-y-px rounded-md shadow-sm md:w-1/2 lg:w-full xl:w-1/2">
             <div>
               <label htmlFor="email-address" className="sr-only">
                 Email address
               </label>
               <input
-                id="email-address"
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
                 value={email}
-                onInput={(e) => setEmail(e.currentTarget.value)}
+                onChange={onChange}
                 className="relative block w-full h-12 px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="john@doe.com"
               />
@@ -91,23 +107,24 @@ export default function Login({ csrfToken }: ServerSideProps) {
                 Password
               </label>
               <input
-                id="password"
                 name="password"
                 type="password"
                 autoComplete="current-password"
                 required
                 value={password}
-                onInput={(e) => setPassword(e.currentTarget.value)}
+                onChange={onChange}
                 className="relative block w-full h-12 px-3 py-2 my-5 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
               />
             </div>
           </div>
-          <div>
+          <div className="m-auto md:w-1/2 lg:w-full xl:w-1/2">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="relative flex justify-center w-full h-12 px-4 py-2 pt-3 text-sm font-medium text-white align-middle bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              className={`relative flex justify-center w-full h-12 px-4 py-2 pt-3 text-sm font-medium text-white align-middle bg-indigo-600 border border-transparent rounded-md cursor-pointer group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                isSubmitting && "cursor-progress"
+              }`}>
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg
                   className="w-5 h-5 text-indigo-500 group-hover:text-indigo-400"
