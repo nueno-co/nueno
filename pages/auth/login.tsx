@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from "next";
 import { getCsrfToken, signIn } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
@@ -13,6 +14,7 @@ interface ServerSideProps {
   csrfToken: string;
 }
 
+// User Props
 interface UserProps {
   email: string;
   password: string;
@@ -77,12 +79,12 @@ export default function Login({ csrfToken }: ServerSideProps) {
           </p>
         </div>
       </div>
-      <div className="flex items-center justify-center w-full h-screen lg:w-1/2">
+      <div className="flex flex-col items-center justify-center w-full h-screen mx-10 lg:w-1/2">
         <form className="w-full mx-10 mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <Image src={Logo} className="w-auto h-12 mx-auto" width={60} height={60} />
             <h2 className="mt-6 text-xl font-bold text-center text-gray-900 md:text-2xl">
-              Sign in to your account
+              Welcome back! Sign in
             </h2>
           </div>
           <input name="csrfToken" type="hidden" defaultValue={csrfToken || undefined} hidden />
@@ -143,6 +145,15 @@ export default function Login({ csrfToken }: ServerSideProps) {
             </button>
           </div>
         </form>
+        <div className="w-full px-1 py-5 text-right lg:w-full xl:w-1/2 md:w-1/2">
+          <p>
+            New user?{" "}
+            <span className="text-indigo-800">
+              {" "}
+              <Link href="/auth/signup">Sign up</Link>
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
