@@ -1,9 +1,9 @@
 import axios from "axios";
 import { getSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import ImageComponent from "../../components/Image";
 import Logo from "../../public/nueno-logo-black.svg";
 import styles from "../../styles/Auth.module.css";
 
@@ -70,7 +70,7 @@ export default function Signup() {
   return (
     <div className="flex flex-row-reverse items-center justify-center min-h-screen">
       <div
-        className={`items-center justify-center hidden w-full h-screen lg:flex lg:w-1/2 ${styles.authStyles}`}>
+        className={`items-center justify-center hidden w-full h-screen lg:flex lg:w-1/2 ${styles.signupSideBar}`}>
         <div className="flex flex-col items-center justify-center text-white">
           <h1 className="w-full my-5 text-4xl font-bold text-center md:w-4/4 lg:text-right lg:w-1/2 lg:text-6xl">
             Hiring platform for engineering leaders
@@ -83,8 +83,8 @@ export default function Signup() {
       <div className="flex flex-col items-center justify-center w-full h-screen mx-10 lg:w-1/2">
         <form className="w-full mx-10 mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="flex flex-col">
-            <Image src={Logo} className="w-auto h-12 mx-auto" width={60} height={60} />
-            <h2 className="mt-6 text-xl font-bold text-center text-gray-900 md:text-2xl">Sign up!</h2>
+            <ImageComponent src={Logo} width={60} height={60} />
+            <h2 className="mt-6 text-xl font-bold text-center text-gray-900 md:text-2xl">Welcome! Sign up</h2>
           </div>
           <div className="m-auto -space-y-px rounded-md shadow-sm md:w-1/2 lg:w-full xl:w-1/2">
             <div>

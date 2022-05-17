@@ -1,5 +1,8 @@
-.authStyles {
-  //background: rgb(68, 101, 235);
+.signupSideBar {
+  background-image: url(https://uploads-ssl.webflow.com/62374b3…/62374b3…_shape.svg),
+    linear-gradient(-39deg, rgb(123, 67, 151), rgb(68, 101, 235));
+}
+.signinSideBar {
   background-image: url(https://uploads-ssl.webflow.com/62374b3…/62374b3…_shape.svg),
     linear-gradient(39deg, rgb(123, 67, 151), rgb(68, 101, 235));
 }
