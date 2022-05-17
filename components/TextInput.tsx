@@ -11,7 +11,7 @@ interface InputProps {
   onChange: (e: { target: { name: string; value: string | boolean } }) => void;
 }
 
-const Input: React.FC<InputProps> = ({
+const TextInput: React.FC<InputProps> = ({
   name,
   type = "text",
   value,
@@ -35,4 +35,4 @@ const Input: React.FC<InputProps> = ({
   );
 };
 
-export default Input;
+export default TextInput;

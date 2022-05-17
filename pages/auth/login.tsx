@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { getSession } from "@helpers/auth";
 
 import ImageComponent from "../../components/Image";
-import Input from "../../components/Input";
+import TextInput from "../../components/TextInput";
 import Logo from "../../public/nueno-logo-black.svg";
 import styles from "../../styles/Auth.module.css";
 
@@ -94,7 +94,7 @@ export default function Login({ csrfToken }: ServerSideProps) {
               <label htmlFor="email-address" className="sr-only">
                 Email address
               </label>
-              <Input
+              <TextInput
                 name="email"
                 type="email"
                 value={email}
@@ -108,7 +108,7 @@ export default function Login({ csrfToken }: ServerSideProps) {
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
-              <Input
+              <TextInput
                 name="password"
                 type="password"
                 autoComplete="current-password"
@@ -147,10 +147,9 @@ export default function Login({ csrfToken }: ServerSideProps) {
         <div className="w-full px-1 py-5 text-right lg:w-full xl:w-1/2 md:w-1/2">
           <p>
             New user?{" "}
-            <span className="text-indigo-800">
-              {" "}
-              <Link href="/auth/signup">Sign up</Link>
-            </span>
+            <Link href="/auth/signup">
+              <a className="text-indigo-800">Sign up</a>
+            </Link>
           </p>
         </div>
       </div>

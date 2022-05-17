@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import ImageComponent from "../../components/Image";
-import Input from "../../components/Input";
+import TextInput from "../../components/TextInput";
 import Logo from "../../public/nueno-logo-black.svg";
 import styles from "../../styles/Auth.module.css";
 
@@ -94,7 +94,7 @@ export default function Signup() {
                 Full Name
               </label>
 
-              <Input
+              <TextInput
                 name="name"
                 value={name}
                 onChange={onChange}
@@ -108,7 +108,7 @@ export default function Signup() {
               <label htmlFor="email-address" className="capitalize sr-only">
                 Email address
               </label>
-              <Input
+              <TextInput
                 type="email"
                 name="email"
                 value={email}
@@ -122,7 +122,7 @@ export default function Signup() {
               <label htmlFor="password" className="capitalize sr-only">
                 Password
               </label>
-              <Input
+              <TextInput
                 name="password"
                 type="password"
                 value={password}
@@ -161,10 +161,9 @@ export default function Signup() {
         <div className="w-full px-1 py-5 text-left lg:w-full xl:w-1/2 md:w-1/2">
           <p>
             Already a user?{" "}
-            <span className="text-indigo-800">
-              {" "}
-              <Link href="/auth/login">Sign in </Link>
-            </span>
+            <Link href="/auth/login">
+              <a className="text-indigo-800">Sign in</a>
+            </Link>
           </p>
         </div>
       </div>

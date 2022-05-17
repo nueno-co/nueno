@@ -11,7 +11,7 @@ export default function Index() {
   }, [loading, session]);
 
   return (
-    <div className="pt-8">
+    <div className="flex items-center justify-center h-screen pt-8">
       <Link href="/auth/login">
         <a className="p-1 text-white bg-blue-800">LOGIN</a>
       </Link>
