@@ -42,7 +42,6 @@ export default function Signup() {
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    console.log(user);
 
     if (isSubmitting) {
       return;
