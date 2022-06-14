@@ -17,7 +17,7 @@ const Jobs = () => {
         </span>
       </div>
       <main>
-        <div className="bg-white h-56 rounded-xl w-full mt-10 p-5">
+        <div className="bg-white h-56 rounded-xl w-full mt-10 p-5 hover:drop-shadow-md">
           <div className="flex justify-between items-center">
             <p className="text-xl text-gray-600">Jnr. Software Enginer</p>
             <div>
@@ -26,7 +26,7 @@ const Jobs = () => {
                 className="py-2 px-10 hover:bg-gray-100 border-black border text-gray-700 mx-2 rounded-xl">
                 Find Candidate
               </button>
-              <button className="py-2 px-7 text-white bg-orange-600 rounded-xl">
+              <button className="py-2 px-7 hover:drop-shadow-lg text-white bg-orange-600 rounded-xl">
                 Publish (Careers page only)
               </button>
             </div>
