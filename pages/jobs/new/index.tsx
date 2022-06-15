@@ -50,6 +50,7 @@ export default function JobsNew() {
                       <label htmlFor="job-title" className="block mb-2 text-sm font-medium text-gray-700">
                         <span className="pr-1 text-red-600">*</span> Job title
                       </label>
+
                       <input
                         id="job-title"
                         name="job-title"
@@ -63,7 +64,7 @@ export default function JobsNew() {
                     </div>
                   </div>
 
-                  <div className="px-4 py-5 bg-white sm:p-6">
+                  <div className="px-4 py-2 bg-white sm:p-6">
                     <div>
                       <label htmlFor="job-title" className="block mb-2 text-sm font-medium text-gray-700">
                         <span className="pr-1 text-red-600">*</span>Description
@@ -79,7 +80,7 @@ export default function JobsNew() {
                         onInput={(e) => setDescription(e.currentTarget.value)}
                       />
                     </div>
-                    <div>
+                    <div className="mt-3">
                       <button
                         type="button"
                         onClick={submit}
