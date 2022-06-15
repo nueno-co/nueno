@@ -27,16 +27,8 @@ export default function JobsNew() {
   return (
     <Shell>
       <header>
-        <div className="py-6 mx-auto max-w-7xl sm:px-6 md:px-0 lg:flex lg:items-center lg:justify-between">
+        <div className="px-6 py-6 mx-auto max-w-7xl md:px-0 lg:flex lg:items-center lg:justify-between">
           <h1 className="text-3xl font-bold text-gray-900">New job</h1>
-          <span className="sm:ml-3">
-            <button
-              type="button"
-              onClick={submit}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Save & continue
-            </button>
-          </span>
         </div>
       </header>
       <main>
@@ -92,11 +84,12 @@ export default function JobsNew() {
                 </div>
               </form>
             </div>
-            <div className="md:col-span-1">
+            <div className="p-8 shadow-lg md:col-span-1">
               <div className="px-4 sm:px-0">
-                <h3 className="text-lg font-medium leading-6 text-gray-900">Tips</h3>
+                <h3 className="mb-3 text-2xl font-medium leading-6 text-gray-900">Tips</h3>
+                <hr />
                 <div className="mt-1 text-sm text-gray-600">
-                  <ul className="list-disc">
+                  <ul className="mt-2 list-disc">
                     <li>Use common job titles for searchability.</li>
                     <li>Advertise for just one job eg: Software Engineer, not Software Engineers.</li>
                   </ul>
