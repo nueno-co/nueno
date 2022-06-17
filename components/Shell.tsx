@@ -197,7 +197,7 @@ export default function Shell(props: { children: ReactNode }) {
         </Disclosure>
 
         <main>
-          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">{props.children}</div>
+          <div className="mx-auto bg-gray-100 h-min-screen max-w-full sm:px-6 lg:px-8">{props.children}</div>
         </main>
       </div>
     </>
