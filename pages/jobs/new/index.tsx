@@ -10,17 +10,48 @@ export default function JobsNew() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  /**
+   * @description Validate input fields on form submit
+   *
+   * @returns void
+   */
+  function validateForm() {
+    const title = document.getElementById("job-title") as HTMLInputElement;
+    const description = document.getElementById("description") as HTMLInputElement;
+    let response = true as boolean;
+
+    if (!title.value) {
+      alert("Please enter a job title.");
+      response = false;
+    }
+
+    if (title.value.length < 3) {
+      alert("The job title should be at least 10 characters long.");
+      response = false;
+    }
+
+    if (!description.value) {
+      alert("Please enter the job description.");
+      response = false;
+    }
+
+    return response;
+  }
+
   async function submit(e: BaseSyntheticEvent) {
     e.preventDefault();
 
-    try {
-      const requestParams: JobsCreateRequestParams = { title, description };
-      const response = await axios.post("/api/jobs/create", requestParams);
-      const responseData: JobsCreateResponseParams = response.data;
+    // Validate input fields request
+    if (validateForm()) {
+      try {
+        const requestParams: JobsCreateRequestParams = { title, description };
+        const response = await axios.post("/api/jobs/create", requestParams);
+        const responseData: JobsCreateResponseParams = response.data;
 
-      router.push({ pathname: `/jobs/new/${responseData.uid}/application-form` });
-    } catch (e) {
-      console.log(e);
+        router.push({ pathname: `/jobs/new/${responseData.uid}/application-form` });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
@@ -48,12 +79,13 @@ export default function JobsNew() {
                   <div className="px-4 py-5 bg-white sm:p-6">
                     <div>
                       <label htmlFor="job-title" className="block mb-2 text-sm font-medium text-gray-700">
-                        <span className="pr-1 text-red-600">*</span> Job title
+                        <span className="pr-1 text-red-600">*</span>Job title
                       </label>
                       <input
                         id="job-title"
                         name="job-title"
                         type="text"
+                        autoComplete="off"
                         required
                         className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         placeholder="Full-Stack Engineer"
@@ -63,7 +95,7 @@ export default function JobsNew() {
                     </div>
                   </div>
 
-                  <div className="px-4 py-5 bg-white sm:p-6">
+                  <div className="px-4 py-5 -mt-5 bg-white sm:p-6">
                     <div>
                       <label htmlFor="job-title" className="block mb-2 text-sm font-medium text-gray-700">
                         <span className="pr-1 text-red-600">*</span>Description
@@ -79,7 +111,7 @@ export default function JobsNew() {
                         onInput={(e) => setDescription(e.currentTarget.value)}
                       />
                     </div>
-                    <div>
+                    <div className="mt-3">
                       <button
                         type="button"
                         onClick={submit}
