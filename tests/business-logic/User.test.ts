@@ -1,98 +1,71 @@
 import UserEntity from "@business-logic/User";
+import { User } from "@prisma/client";
 
-import { hashPassword } from "@helpers/auth";
 import prisma from "@helpers/prisma";
 import { teardown } from "@helpers/tests/teardown";
 
-let hashedPassword: string;
-const email = "example@email.com";
+// Default rquest parameters
+const requestParams = {
+  name: "Anthony Joboy",
+  email: "test.user@gmail.com",
+  password: "password",
+};
+
+// Create instance of the user entity class
+const entity = new UserEntity();
 
 describe("User", () => {
   beforeEach(async () => {
     await teardown();
-    hashedPassword = await hashPassword("Example@2022^3");
   });
 
   describe("#create", () => {
-    it("should create user", async () => {
+    it("throws an error if password length is less than 7 characters", async () => {
       const requestParams = {
-        name: "Example Name",
-        email,
-        password: hashedPassword,
+        name: "Anthony Joboy",
+        email: "test.user@gmail.com",
+        password: "pass",
       };
-
-      const entity = new UserEntity();
-      const result = await entity.create(requestParams);
-      const { message } = result;
-
-      expect(message).toBe("User created");
-    });
-
-    it("Should not create user when email exists", async () => {
-      const requestParams = {
-        name: "Example Name",
-        email,
-        password: hashedPassword,
-      };
-
-      const entity = new UserEntity();
-      await entity.create(requestParams);
-
-      await expect(async () => {
-        await entity.create(requestParams);
-      }).rejects.toThrowError("Email address is already registered.");
-    });
-
-    it("Should not create user when password is invalid", async () => {
-      const requestParams = {
-        name: "Example Name",
-        email: "example2@email.com",
-        password: "",
-      };
-
-      const entity = new UserEntity();
 
       await expect(async () => {
         await entity.create(requestParams);
       }).rejects.toThrowError("Invalid input - password should be at least 7 characters long.");
     });
 
-    it("Should not create user when email is invalid", async () => {
+    it("throws an error if email address is invalid ", async () => {
       const requestParams = {
-        name: "Example Name",
-        email: "exampleemail.com",
-        password: hashedPassword,
+        name: "Anthony Joboy",
+        email: "test.usergmail.com",
+        password: "pass",
       };
-
-      const entity = new UserEntity();
 
       await expect(async () => {
         await entity.create(requestParams);
       }).rejects.toThrowError("Invalid email");
     });
-  });
-});
 
-describe("#getOne", () => {
-  it("Should get single user", async () => {
-    const company = await prisma.company.create({
-      data: {
-        name: "Example Name",
-      },
+    it("throws an error if email address exists", async () => {
+      // Create first user
+      await entity.create(requestParams);
+
+      await expect(async () => {
+        // Create second user with the saame request parameters
+        await entity.create(requestParams);
+      }).rejects.toThrowError("Email address is already registered.");
     });
 
-    const user = await prisma.user.create({
-      data: {
-        name: "Example Name",
-        email: "example@email.com",
-        password: hashedPassword,
-        companyId: company.id,
-      },
+    it("can create a new user", async () => {
+      // Create a new user
+      const result = await entity.create(requestParams);
+
+      // Get the new newly created user
+      const user = (await prisma.user.findUnique({ where: { id: result.data.id } })) as User;
+
+      // Verify the name parameter matches the name saved in the `user` table
+      expect(user.name).toBe(requestParams.name);
+
+      // Verify the email address parameter matches the email address saved in the `user` table
+      expect(user.email).toBe(requestParams.email);
     });
-
-    const entity = new UserEntity();
-    const result = await entity.find(user.id);
-
-    expect(result?.name).toBe(user.name);
   });
 });
