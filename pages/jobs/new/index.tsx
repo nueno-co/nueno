@@ -13,7 +13,7 @@ export default function JobsNew() {
   /**
    * @description Validate input fields on form submit
    *
-   * @returns void
+   * @returns bolean $response
    */
   function validateForm() {
     const title = document.getElementById("job-title") as HTMLInputElement;

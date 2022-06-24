@@ -10,6 +10,7 @@ export default class UserEntity {
       where: {
         id,
       },
+      include: { Company: true },
     });
   }
 

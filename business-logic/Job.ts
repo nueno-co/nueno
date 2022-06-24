@@ -6,6 +6,14 @@ import NotFoundError from "@helpers/errors/NotFoundError";
 import prisma from "@helpers/prisma";
 
 export default class JobEntity {
+  async findByUuid(uid: string) {
+    return prisma.job.findUnique({
+      where: {
+        uid,
+      },
+    });
+  }
+
   async create(params: JobsCreateRequestParams, userId: number) {
     const user = await new UserEntity().find(userId);
 
