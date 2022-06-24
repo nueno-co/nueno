@@ -23,6 +23,7 @@
     "@thaddeusjiang/react-sortable-list": "^0.0.3",
     "axios": "^0.25.0",
     "bcryptjs": "^2.4.3",
+    "moment": "^2.29.3",
     "next": "12.0.8",
     "next-auth": "^4.0.6",
     "react": "17.0.2",

@@ -38,6 +38,14 @@ export default class JobEntity {
       where: {
         companyId: user.companyId,
       },
+      include: { Company: true },
+    });
+  }
+  async find(jobUid: string) {
+    return prisma.job.findFirst({
+      where: {
+        uid: jobUid,
+      },
     });
   }
 }
