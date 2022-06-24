@@ -26,7 +26,7 @@ export default class UserEntity {
     });
 
     const hashedPassword = await hashPassword(password);
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         name,
         email: userEmail,
@@ -35,7 +35,10 @@ export default class UserEntity {
       },
     });
 
-    return { message: "User created" };
+    return {
+      data: user,
+      message: "User created successfully!",
+    };
   }
 
   private async validateCreate(email: string, password: string) {
