@@ -1,46 +1,48 @@
 import { ApplicationFormsCreateRequestParams } from "@api-contracts/application-forms/create";
 import { FieldCreateResponseParams } from "@api-contracts/application-forms/fields";
 import { DotsVerticalIcon, TrashIcon } from "@heroicons/react/outline";
-import {
-  SortableList,
-  SortableItem,
-  SortableItemProps,
-  ItemRenderProps,
-} from "@thaddeusjiang/react-sortable-list";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { BaseSyntheticEvent, useState } from "react";
-import { useQuery } from "react-query";
+import { BaseSyntheticEvent, useState, useEffect } from "react";
 import { Container, Draggable } from "react-smooth-dnd";
 
 import { asStringOrUndefined } from "@helpers/type-safety";
 
 import Shell from "@components/Shell";
 
+type responseType = {
+  count: number;
+};
+
 export default function JobsNew() {
   const router = useRouter();
   const jobUid = asStringOrUndefined(router.query.id);
+  const [fields, setField] = useState([]);
 
-  // const jobUid = typeof router.query?.id === "string" ? router.query.id : "";
+  // Fix useRouter() undefined on query in first render
+  useEffect(() => {
+    if (router.asPath !== router.route) {
+      getJobApplicationFormFields();
+    }
+  }, [router.isReady]);
 
-  const query = useQuery("items", getJobApplicationFormFields);
-  console.log(query);
-
-  const [items, setItems] = useState<SortableItemProps[]>([query as any]);
-  const [lists, setList] = useState([query as any]);
-
+  /**
+   * @description Get the fields associated with a job appplication form.
+   *
+   * @return fields: array
+   */
   async function getJobApplicationFormFields() {
-    // const response = await axios.get(`/api/application-forms/field-list/${jobUid}`);
-    const response = await axios.get(`/api/application-forms/field-list/5952dfdb`);
-    // const responseData = response.data;
+    const response = await axios.get(`/api/application-forms/field-list/${jobUid}`);
     const responseData: FieldCreateResponseParams = response.data;
-    console.clear();
-    console.log(responseData);
-    setItems(responseData as any);
-    setList(responseData as any);
+    setField(responseData as any);
     return responseData;
   }
 
+  /**
+   * @description Validate form inputs on submit.
+   *
+   * @return response: boolean
+   */
   function validateForm() {
     const title = document.getElementById("job-title") as HTMLInputElement;
     const description = document.getElementById("description") as HTMLInputElement;
@@ -64,10 +66,28 @@ export default function JobsNew() {
     return response;
   }
 
-  const deleteField = (fieldId: any) => {
-    alert(fieldId);
-  };
+  /**
+   * @description Delete a job application form input field.
+   *
+   * @return response: number
+   */
+  async function deleteField(fieldId: number, fieldLabel: string) {
+    if (confirm("Are you sure you want to delete this field from your form?")) {
+      const response = await axios.delete(`/api/application-forms/delete-field/${fieldId}`);
+      if (response.statusText == "OK") {
+        getJobApplicationFormFields();
+        alert(`${fieldLabel} field was deleted sucessfully!`);
+      }
+    } else {
+      return;
+    }
+  }
 
+  /**
+   * @description Submit a user created form input field.
+   *
+   * @return response: number
+   */
   async function submit(e: BaseSyntheticEvent) {
     e.preventDefault();
     if (!jobUid) return;
@@ -82,25 +102,30 @@ export default function JobsNew() {
     }
   }
 
+  /**
+   * @description Generate default fields for the current job appplication form in view.
+   *
+   * @return response: number
+   */
   async function generateDefaultFields(e: BaseSyntheticEvent) {
     e.preventDefault();
     if (!jobUid) return;
-
     const data = { jobUid: jobUid };
 
-    type responseType = {
-      count: number;
-    };
-
     try {
-      const response: responseType = await axios.post("/api/application-forms/generate-default-fields", data);
+      const response = await axios.post("/api/application-forms/generate-default-fields", data);
 
-      if (response.count > 0) getJobApplicationFormFields();
+      if (response.data.count > 0) getJobApplicationFormFields();
     } catch (e) {
       console.log(e);
     }
   }
 
+  /**
+   * @description Re-order a job application  form input field.
+   *
+   * @return result: void
+   */
   const applyDrag = (arr: any, dragResult: any) => {
     const { removedIndex, addedIndex, payload } = dragResult;
     console.log(removedIndex, addedIndex, payload);
@@ -144,56 +169,30 @@ export default function JobsNew() {
                 <div className="px-4 py-5 space-y-2 bg-white sm:p-6">
                   <h2 className="text-lg font-semibold text-gray-700">Customize your application form</h2>
 
-                  <Container onDrop={(e) => setList(applyDrag(lists as any, e))}>
-                    {lists.map((item) => {
-                      return (
-                        <Draggable key={item.id} className="my-2">
-                          <div className="flex items-center">
-                            <DotsVerticalIcon
-                              className="w-5 h-5 text-gray-400 cursor-move"
-                              aria-hidden="true"
-                            />
-                            <div className="flex-auto p-2 bg-gray-100 rounded">
-                              <p className="text-md">{item.label}</p>
-                            </div>
-
-                            <TrashIcon
-                              key={item.id}
-                              className="z-[9999] w-5 h-5 ml-1 text-red-600 cursor-pointer hover:text-indigo-600"
-                              onClick={() => deleteField(item.id)}
-                            />
-                          </div>
-                        </Draggable>
-                      );
-                    })}
-                  </Container>
-
-                  {items ? (
-                    <SortableList items={items} setItems={setItems}>
-                      {({ items }: { items: SortableItemProps[] }) => (
-                        <>
-                          {items.map((item: SortableItemProps) => (
-                            <SortableItem key={item.id} id={item.id} onClick={() => deleteField(item.id)}>
-                              <div className="flex items-center">
-                                <DotsVerticalIcon
-                                  className="w-5 h-5 text-gray-400 cursor-move"
-                                  aria-hidden="true"
-                                />
-                                <div className="flex-auto p-2 bg-gray-100 rounded">
-                                  <p className="text-md">{item.label}</p>
-                                </div>
-
-                                <TrashIcon
-                                  key={item.id}
-                                  className="z-[9999] w-5 h-5 ml-1 text-red-600 cursor-pointer hover:text-indigo-600"
-                                  onClick={() => deleteField(item.id)}
-                                />
+                  {fields.length ? (
+                    <Container onDrop={(e) => setField(applyDrag(fields as any, e))}>
+                      {fields.map((field: FieldCreateResponseParams) => {
+                        return (
+                          <Draggable key={field.id} className="my-2">
+                            <div className="flex items-center">
+                              <DotsVerticalIcon
+                                className="w-5 h-5 text-gray-400 cursor-move"
+                                aria-hidden="true"
+                              />
+                              <div className="flex-auto p-2 bg-gray-100 rounded">
+                                <p className="text-md">{field.label}</p>
                               </div>
-                            </SortableItem>
-                          ))}
-                        </>
-                      )}
-                    </SortableList>
+
+                              <TrashIcon
+                                key={field.id}
+                                className="w-5 h-5 ml-1 text-red-600 cursor-pointer hover:text-indigo-600"
+                                onClick={() => deleteField(field.id, field.label)}
+                              />
+                            </div>
+                          </Draggable>
+                        );
+                      })}
+                    </Container>
                   ) : (
                     <div className="py-5 my-10 text-center bg-gray-100 rounded">
                       <h4 className="flex-auto p-1">
