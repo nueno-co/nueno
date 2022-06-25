@@ -1,4 +1,5 @@
 import { ApplicationFormsCreateRequestParams } from "@api-contracts/application-forms/create";
+import { FieldCreateResponseParams } from "@api-contracts/application-forms/fields";
 import { DotsVerticalIcon, TrashIcon } from "@heroicons/react/outline";
 import {
   SortableList,
@@ -9,30 +10,33 @@ import {
 import axios from "axios";
 import { useRouter } from "next/router";
 import { BaseSyntheticEvent, useState } from "react";
+import { useQuery } from "react-query";
 
 import { asStringOrUndefined } from "@helpers/type-safety";
 
 import Shell from "@components/Shell";
 
-const FieldItem = (name: any) => (
-  <div className="flex items-center">
-    <DotsVerticalIcon className="w-5 h-5 text-gray-400 cursor-move" aria-hidden="true" />
-    <div className="flex-auto p-2 bg-gray-100 rounded">
-      <p className="text-md">{name}</p>
-    </div>
-  </div>
-);
-
 export default function JobsNew() {
   const router = useRouter();
   const jobUid = asStringOrUndefined(router.query.id);
 
-  const [items, setItems] = useState<SortableItemProps[]>([
-    { id: "1", name: "First Name" },
-    { id: "2", name: "Last Name" },
-    { id: "3", name: "Address" },
-    { id: "4", name: "Years of Experience" },
-  ]);
+  // const jobUid = typeof router.query?.id === "string" ? router.query.id : "";
+
+  const query = useQuery("items", getJobApplicationFormFields);
+  console.log(query);
+
+  const [items, setItems] = useState<SortableItemProps[]>([query as any]);
+
+  async function getJobApplicationFormFields() {
+    // const response = await axios.get(`/api/application-forms/field-list/${jobUid}`);
+    const response = await axios.get(`/api/application-forms/field-list/5952dfdb`);
+    // const responseData = response.data;
+    const responseData: FieldCreateResponseParams = response.data;
+    console.clear();
+    console.log(responseData);
+    setItems(responseData as any);
+    return responseData;
+  }
 
   function validateForm() {
     const title = document.getElementById("job-title") as HTMLInputElement;
@@ -74,16 +78,21 @@ export default function JobsNew() {
       console.log(e);
     }
   }
+
   async function generateDefaultFields(e: BaseSyntheticEvent) {
     e.preventDefault();
     if (!jobUid) return;
 
     const data = { jobUid: jobUid };
 
-    try {
-      await axios.post("/api/application-forms/generate-default-fields", data);
+    type responseType = {
+      count: number;
+    };
 
-      router.push({ pathname: `/jobs/new/${jobUid}/application-form` });
+    try {
+      const response: responseType = await axios.post("/api/application-forms/generate-default-fields", data);
+
+      if (response.count > 0) getJobApplicationFormFields();
     } catch (e) {
       console.log(e);
     }
@@ -111,66 +120,89 @@ export default function JobsNew() {
               <div className="shadow sm:rounded-md sm:overflow-hidden">
                 <div className="px-4 py-5 space-y-2 bg-white sm:p-6">
                   <h2 className="text-lg font-semibold text-gray-700">Customize your application form</h2>
-                  <SortableList items={items} setItems={setItems}>
-                    {({ items }: { items: SortableItemProps[] }) => (
-                      <>
-                        {items.map((item: SortableItemProps) => (
-                          <SortableItem key={item.id} id={item.id}>
-                            <div className="flex items-center">
-                              <DotsVerticalIcon
-                                className="w-5 h-5 text-gray-400 cursor-move"
-                                aria-hidden="true"
-                              />
-                              <div className="flex-auto p-2 bg-gray-100 rounded">
-                                <p className="text-md">{item.name}</p>
+
+                  {items ? (
+                    <SortableList items={items} setItems={setItems}>
+                      {({ items }: { items: SortableItemProps[] }) => (
+                        <>
+                          {items.map((item: SortableItemProps) => (
+                            <SortableItem key={item.id} id={item.id}>
+                              <div className="flex items-center">
+                                <DotsVerticalIcon
+                                  className="w-5 h-5 text-gray-400 cursor-move"
+                                  aria-hidden="true"
+                                />
+                                <div className="flex-auto p-2 bg-gray-100 rounded">
+                                  <p className="text-md">{item.label}</p>
+                                </div>
+
+                                <TrashIcon
+                                  key={item.id}
+                                  className="z-auto w-5 h-5 text-red-600 cursor-pointer hover:text-indigo-600"
+                                  onClick={() => deleteField(item.id)}
+                                />
                               </div>
+                            </SortableItem>
+                          ))}
+                        </>
+                      )}
+                    </SortableList>
+                  ) : (
+                    <div className="py-5 my-10 text-center bg-gray-100 rounded">
+                      <h4 className="flex-auto p-1">
+                        You currently have a no fields added for this application form
+                      </h4>
+                      <span className="mb-2 sm:ml-3">
+                        <h3 className="text-lg font-medium leading-6 text-gray-900">
+                          Do you want save time?
+                        </h3>
 
-                              <TrashIcon
-                                key={item.id}
-                                className="z-auto w-5 h-5 text-red-600 cursor-pointer hover:text-indigo-600"
-                                onClick={() => deleteField(item.id)}
-                              />
-                            </div>
-                          </SortableItem>
-                        ))}
-                      </>
-                    )}
-                  </SortableList>
-
+                        <button
+                          type="button"
+                          onClick={generateDefaultFields}
+                          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                          Load Default Fields
+                        </button>
+                      </span>
+                      <p className="text-red-600">
+                        <strong>Note: </strong>Existing fields will be deleted.
+                      </p>
+                    </div>
+                  )}
                   <form>
-                    <h3 className="mt-3 text-lg font-medium leading-6 text-gray-900">Add Form Fields</h3>
+                    <h3 className="mt-5 font-medium leading-6 text-gray-900 tex5t-lg">Add Form Fields</h3>
                     <div className="flex items-center">
                       <div className="flex-auto p-2 bg-gray-100 rounded">
-                        <p className="text-sm font-semibold text-md">Field Type</p>
+                        <p className="mb-1 text-sm font-semibold text-md">Field Type</p>
                         <select
                           defaultValue="short_text"
-                          className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                          className="block w-full p-2 mb-4 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                           <option value="short_text">Short Text</option>
                           <option value="long_text">Long Text</option>
                           <option value="checkbox">Yes/No(Checkbox)</option>
                           <option value="select">Select One(Dropdown Select)</option>
                           <option value="multi_select">Select Multiple</option>
                         </select>
-                        <p className="text-sm font-semibold text-md">Name of Field</p>
+                        <p className="mb-1 text-sm font-semibold text-md">Name of Field</p>
                         <input
                           id="label"
                           name="label"
                           type="text"
                           required
-                          className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="e. g. LinkedIn URL"
+                          className="block w-full p-2 mb-4 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="e. g. First Name, LinkedIn URL"
                         />
-                        <p className="text-sm font-semibold text-md">Field Requirement</p>
+                        <p className="mb-1 text-sm font-semibold text-md">Field Requirement</p>
                         <select
                           defaultValue="short_text"
                           name="required"
-                          className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                          className="block w-full p-2 mb-4 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                           <option value="true">Mandatory</option>
                           <option value="false">Optional</option>
                         </select>
                       </div>
                     </div>
-                    <div>
+                    <div className="my-3">
                       <button
                         type="button"
                         onClick={submit}
@@ -197,17 +229,6 @@ export default function JobsNew() {
                   </ul>
                 </div>
               </div>
-
-              <span className="sm:ml-3">
-                <h3 className="text-lg font-medium leading-6 text-gray-900">Do you want save time?</h3>
-
-                <button
-                  type="button"
-                  onClick={generateDefaultFields}
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                  Load Default Fields
-                </button>
-              </span>
             </div>
           </div>
         </div>

@@ -65,6 +65,7 @@ model Field {
   FieldChoice FieldChoice[]
   Company     Company?      @relation(fields: [companyId], references: [id])
   companyId   Int?
+  order       Int           @default(autoincrement())
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
