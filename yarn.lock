@@ -3759,7 +3759,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.8.1:
+prop-types@>=15.6.0, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -3820,6 +3820,14 @@ react-refresh@0.8.3:
   version "0.8.3"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.8.3.tgz"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
+
+react-smooth-dnd@^0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/react-smooth-dnd/-/react-smooth-dnd-0.11.1.tgz#8d976137854c95f8fc09aa1ebc3069f69ceed6fa"
+  integrity sha512-+lVWQwPlK980VbFLtMSKfAJBt5ep37H/rVm3OnFiTpMFAghB9YQmrj3MnoIZ8tF+/niM/FFLpnSo8IgnbEY4Kg==
+  dependencies:
+    prop-types ">=15.6.0"
+    smooth-dnd "0.12.1"
 
 react@17.0.2:
   version "17.0.2"
@@ -4055,6 +4063,11 @@ slice-ansi@^5.0.0:
   dependencies:
     ansi-styles "^6.0.0"
     is-fullwidth-code-point "^4.0.0"
+
+smooth-dnd@0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/smooth-dnd/-/smooth-dnd-0.12.1.tgz#cdb44c972355659e32770368b29b6a80e0ed96f1"
+  integrity sha512-Dndj/MOG7VP83mvzfGCLGzV2HuK1lWachMtWl/Iuk6zV7noDycIBnflwaPuDzoaapEl3Pc4+ybJArkkx9sxPZg==
 
 source-map-js@^1.0.2:
   version "1.0.2"

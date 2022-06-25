@@ -11,6 +11,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { BaseSyntheticEvent, useState } from "react";
 import { useQuery } from "react-query";
+import { Container, Draggable } from "react-smooth-dnd";
 
 import { asStringOrUndefined } from "@helpers/type-safety";
 
@@ -26,6 +27,7 @@ export default function JobsNew() {
   console.log(query);
 
   const [items, setItems] = useState<SortableItemProps[]>([query as any]);
+  const [lists, setList] = useState([query as any]);
 
   async function getJobApplicationFormFields() {
     // const response = await axios.get(`/api/application-forms/field-list/${jobUid}`);
@@ -35,6 +37,7 @@ export default function JobsNew() {
     console.clear();
     console.log(responseData);
     setItems(responseData as any);
+    setList(responseData as any);
     return responseData;
   }
 
@@ -98,6 +101,26 @@ export default function JobsNew() {
     }
   }
 
+  const applyDrag = (arr: any, dragResult: any) => {
+    const { removedIndex, addedIndex, payload } = dragResult;
+    console.log(removedIndex, addedIndex, payload);
+
+    if (removedIndex === null && addedIndex === null) return arr;
+
+    const result = [...arr];
+    let itemToAdd = payload;
+
+    if (removedIndex !== null) {
+      itemToAdd = result.splice(removedIndex, 1)[0];
+    }
+
+    if (addedIndex !== null) {
+      result.splice(addedIndex, 0, itemToAdd);
+    }
+
+    return result;
+  };
+
   return (
     <Shell>
       <header>
@@ -121,12 +144,36 @@ export default function JobsNew() {
                 <div className="px-4 py-5 space-y-2 bg-white sm:p-6">
                   <h2 className="text-lg font-semibold text-gray-700">Customize your application form</h2>
 
+                  <Container onDrop={(e) => setList(applyDrag(lists as any, e))}>
+                    {lists.map((item) => {
+                      return (
+                        <Draggable key={item.id} className="my-2">
+                          <div className="flex items-center">
+                            <DotsVerticalIcon
+                              className="w-5 h-5 text-gray-400 cursor-move"
+                              aria-hidden="true"
+                            />
+                            <div className="flex-auto p-2 bg-gray-100 rounded">
+                              <p className="text-md">{item.label}</p>
+                            </div>
+
+                            <TrashIcon
+                              key={item.id}
+                              className="z-[9999] w-5 h-5 ml-1 text-red-600 cursor-pointer hover:text-indigo-600"
+                              onClick={() => deleteField(item.id)}
+                            />
+                          </div>
+                        </Draggable>
+                      );
+                    })}
+                  </Container>
+
                   {items ? (
                     <SortableList items={items} setItems={setItems}>
                       {({ items }: { items: SortableItemProps[] }) => (
                         <>
                           {items.map((item: SortableItemProps) => (
-                            <SortableItem key={item.id} id={item.id}>
+                            <SortableItem key={item.id} id={item.id} onClick={() => deleteField(item.id)}>
                               <div className="flex items-center">
                                 <DotsVerticalIcon
                                   className="w-5 h-5 text-gray-400 cursor-move"
@@ -138,7 +185,7 @@ export default function JobsNew() {
 
                                 <TrashIcon
                                   key={item.id}
-                                  className="z-auto w-5 h-5 text-red-600 cursor-pointer hover:text-indigo-600"
+                                  className="z-[9999] w-5 h-5 ml-1 text-red-600 cursor-pointer hover:text-indigo-600"
                                   onClick={() => deleteField(item.id)}
                                 />
                               </div>
