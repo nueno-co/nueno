@@ -10,14 +10,13 @@ import { asStringOrUndefined } from "@helpers/type-safety";
 
 import Shell from "@components/Shell";
 
-type responseType = {
-  count: number;
-};
-
 export default function JobsNew() {
   const router = useRouter();
   const jobUid = asStringOrUndefined(router.query.id);
   const [fields, setField] = useState([]);
+  const [label, setLabel] = useState("");
+  const [type, setType] = useState("");
+  const [required, setRequired] = useState(false);
 
   // Fix useRouter() undefined on query in first render
   useEffect(() => {
@@ -25,6 +24,30 @@ export default function JobsNew() {
       getJobApplicationFormFields();
     }
   }, [router.isReady]);
+
+  /**
+   * @description Get the value of the selected field type.
+   * @param value: string
+   *
+   * @return label: string
+   */
+  const typeValue = (value: string) => {
+    setType(value);
+  };
+
+  /**
+   * @description Get the value of the selected field requirement.
+   * @param value: string
+   *
+   * @return label: string
+   */
+  const requiredValue = (value: string) => {
+    if (value == "true") {
+      setRequired(true);
+    } else {
+      setRequired(false);
+    }
+  };
 
   /**
    * @description Get the fields associated with a job appplication form.
@@ -36,34 +59,6 @@ export default function JobsNew() {
     const responseData: FieldCreateResponseParams = response.data;
     setField(responseData as any);
     return responseData;
-  }
-
-  /**
-   * @description Validate form inputs on submit.
-   *
-   * @return response: boolean
-   */
-  function validateForm() {
-    const title = document.getElementById("job-title") as HTMLInputElement;
-    const description = document.getElementById("description") as HTMLInputElement;
-    let response = true as boolean;
-
-    if (!title.value) {
-      alert("Please enter a job title.");
-      response = false;
-    }
-
-    if (title.value.length < 3) {
-      alert("The job title should be at least 10 characters long.");
-      response = false;
-    }
-
-    if (!description.value) {
-      alert("Please enter the job description.");
-      response = false;
-    }
-
-    return response;
   }
 
   /**
@@ -84,6 +79,35 @@ export default function JobsNew() {
   }
 
   /**
+   * @description Validate form inputs on submit.
+   *
+   * @return response: boolean
+   */
+  function validateForm() {
+    const label = document.getElementById("label") as HTMLInputElement;
+    const type = document.getElementById("type") as HTMLInputElement;
+    const required = document.getElementById("required") as HTMLInputElement;
+    let response = true as boolean;
+
+    if (!type.value) {
+      alert("Please select the field type.");
+      response = false;
+    }
+
+    if (!label.value) {
+      alert("Please enter a field label.");
+      response = false;
+    }
+
+    if (!required.value) {
+      alert("Please select the field requirement.");
+      response = false;
+    }
+
+    return response;
+  }
+
+  /**
    * @description Submit a user created form input field.
    *
    * @return response: number
@@ -92,13 +116,31 @@ export default function JobsNew() {
     e.preventDefault();
     if (!jobUid) return;
 
-    try {
-      const requestParams: ApplicationFormsCreateRequestParams = { jobUid, fields: [] };
-      await axios.post("/api/application-forms/create", requestParams);
+    const data = { label, type, required };
 
-      router.push({ pathname: "/jobs/" });
-    } catch (e) {
-      console.log(e);
+    if (validateForm()) {
+      try {
+        const requestParams: ApplicationFormsCreateRequestParams = {
+          jobUid,
+          fields: [data as any],
+        };
+        const response = await axios.post("/api/application-forms/create", requestParams);
+
+        if (response.data.jobUid == jobUid) {
+          // Reset the form
+          const resetForm = document.getElementById("create-field") as HTMLFormElement;
+          resetForm.reset();
+
+          // Update the form field list
+          getJobApplicationFormFields();
+
+          // Display success message
+          alert("Field was added sucessfully!");
+        }
+        // router.push({ pathname: "/jobs/" });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
@@ -215,34 +257,45 @@ export default function JobsNew() {
                       </p>
                     </div>
                   )}
-                  <form>
+                  <form id="create-field">
                     <h3 className="mt-5 font-medium leading-6 text-gray-900 tex5t-lg">Add Form Fields</h3>
                     <div className="flex items-center">
                       <div className="flex-auto p-2 bg-gray-100 rounded">
                         <p className="mb-1 text-sm font-semibold text-md">Field Type</p>
                         <select
-                          defaultValue="short_text"
+                          defaultValue=""
+                          id="type"
+                          onChange={(e) => typeValue(e.target.value)}
                           className="block w-full p-2 mb-4 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                          <option value="short_text">Short Text</option>
-                          <option value="long_text">Long Text</option>
-                          <option value="checkbox">Yes/No(Checkbox)</option>
-                          <option value="select">Select One(Dropdown Select)</option>
-                          <option value="multi_select">Select Multiple</option>
+                          <option value="" disabled>
+                            Select...
+                          </option>
+                          <option value="SHORT_TEXT">Short Text</option>
+                          <option value="LONG_TEXT">Long Text</option>
+                          <option value="CHECKBOX">Yes/No(Checkbox)</option>
+                          <option value="SELECT">Select One(Dropdown Select)</option>
+                          <option value="MULTI_SELECT">Select Multiple</option>
                         </select>
                         <p className="mb-1 text-sm font-semibold text-md">Name of Field</p>
                         <input
                           id="label"
                           name="label"
                           type="text"
+                          onChange={(e) => setLabel(e.target.value)}
                           required
                           className="block w-full p-2 mb-4 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           placeholder="e. g. First Name, LinkedIn URL"
                         />
                         <p className="mb-1 text-sm font-semibold text-md">Field Requirement</p>
                         <select
-                          defaultValue="short_text"
+                          defaultValue=""
+                          id="required"
+                          onChange={(e) => requiredValue(e.target.value)}
                           name="required"
                           className="block w-full p-2 mb-4 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                          <option value="" disabled>
+                            Select...
+                          </option>
                           <option value="true">Mandatory</option>
                           <option value="false">Optional</option>
                         </select>

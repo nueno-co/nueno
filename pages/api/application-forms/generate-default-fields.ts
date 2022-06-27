@@ -1,4 +1,3 @@
-import { FieldCreateResponseParams as ResponseParams } from "@api-contracts/application-forms/fields";
 import GenerateDefaultFields from "@business-logic/GenerateDefaultFields";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
