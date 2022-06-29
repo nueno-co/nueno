@@ -36,7 +36,18 @@ export default function Jobs() {
       </header>
       <main>
         {jobs?.map((job) => {
-          return <div key={job.uid}>{job.title}</div>;
+          return (
+            <div
+              key={job.uid}
+              className="flex justify-between p-4 mb-3 align-middle rounded-md shadow-sm bg-slate-200">
+              <p className="text-1xl">{job.title}</p>
+              <Link href="/applications/new">
+                <button className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-500">
+                  Apply
+                </button>
+              </Link>
+            </div>
+          );
         })}
       </main>
     </Shell>
