@@ -18,7 +18,6 @@ export default class UserEntity {
     const userEmail = email.toLowerCase();
 
     await this.validateCreate(userEmail, password);
-
     const company = await prisma.company.create({
       data: {
         name,

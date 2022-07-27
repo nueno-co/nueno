@@ -40,11 +40,18 @@ export default function Jobs() {
             <div
               key={job.uid}
               className="flex justify-between p-4 mb-3 align-middle rounded-md shadow-sm bg-slate-200">
-              <p className="text-1xl">{job.title}</p>
-              <Link href="/applications/new">
-                <button className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-500">
+              <h4 className="font-bold text-1xl">
+                {job.title}
+                <br />
+                <small className="font-medium">
+                  URL: <span className="font-light">{`${process.env.appUrl}/jobs/${job.uid}`}</span>
+                </small>
+              </h4>
+
+              <Link href={`/jobs/${job.uid}`}>
+                <a target="_blank" className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-500">
                   Apply
-                </button>
+                </a>
               </Link>
             </div>
           );

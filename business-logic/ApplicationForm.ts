@@ -10,7 +10,6 @@ export default class ApplicationFormEntity {
     if (!user) throw new NotFoundError("Not found");
 
     // SAVE fields here. prisma.create(...)
-    console.log(params, userId);
     return { jobUid: "asdf" };
   }
 }

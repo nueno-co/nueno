@@ -1,3 +1,4 @@
+import { Field } from "@prisma/client";
 import { ReactNode } from "react";
 
 export function asStringOrUndefined(str: unknown) {
@@ -11,6 +12,7 @@ export type jobType = {
     id: number;
     name: string;
   };
+  Field: Field[];
 };
 
 export type applyType = {
