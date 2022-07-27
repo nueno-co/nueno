@@ -69,4 +69,53 @@ describe("Job", () => {
       }).rejects.toThrowError("Not found");
     });
   });
+  describe("#apply", () => {
+    it("apply for a job", async () => {
+      const { user } = await minimalSetup();
+      const jobs = await createJob(user.companyId);
+      const field = await prisma.field.create({
+        data: {
+          label: "",
+          //companyId: 1,
+          type: "SHORT_TEXT",
+          jobId: jobs.id,
+          companyId: user.companyId,
+        },
+      });
+      const applyParam = {
+        name: "Test One",
+        email: "mail234@mail.com",
+        addres: "address 21",
+        jobid: jobs.id,
+        fields: [{ text: "Bsc", fieldId: field.id }],
+      };
+      const entity = new JobEntity();
+      const candidate = await entity.apply(applyParam);
+      await expect(candidate).toHaveProperty("email", applyParam.email);
+    });
+    it("already apply", async () => {
+      const { user } = await minimalSetup();
+      const jobs = await createJob(user.companyId);
+      const field = await prisma.field.create({
+        data: {
+          label: "",
+          //companyId: 1,
+          type: "SHORT_TEXT",
+          jobId: jobs.id,
+          companyId: user.companyId,
+        },
+      });
+      const applyParam = {
+        name: "Test One",
+        email: "mail234@mail.com",
+        addres: "address 21",
+        jobid: jobs.id,
+        fields: [{ text: "Bsc", fieldId: field.id }],
+      };
+      const entity = new JobEntity();
+      await entity.apply(applyParam);
+      const candidate = await entity.apply(applyParam);
+      await expect(candidate).toBe(null);
+    });
+  });
 });

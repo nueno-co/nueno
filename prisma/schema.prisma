@@ -33,14 +33,15 @@ model User {
 }
 
 model Job {
-  id          Int      @id @default(autoincrement())
-  uid         String   @unique
+  id          Int         @id @default(autoincrement())
+  uid         String      @unique
   title       String
   description String
   companyId   Int
-  Company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  Company     Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  Candidate   Candidate[]
 
   Field Field[]
   @@index([uid])
@@ -70,12 +71,15 @@ model Field {
 }
 
 model FieldValue {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   text      String
   fieldId   Int
-  Field     Field    @relation(fields: [fieldId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  Field     Field     @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  Candidate Candidate @relation(fields: [candidateId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  candidateId Int
 }
 
 model FieldChoice {
@@ -86,4 +90,15 @@ model FieldChoice {
   Field     Field    @relation(fields: [fieldId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Candidate {
+  id      Int    @id @default(autoincrement())
+  name    String
+  email   String
+  address String
+
+  Job        Job?         @relation(fields: [jobId], references: [id])
+  jobId      Int?
+  FieldValue FieldValue[]
 }

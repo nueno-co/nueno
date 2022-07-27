@@ -1,3 +1,4 @@
+import { JobsApplyRequestParam } from "@api-contracts/jobs/apply";
 import { JobsCreateRequestParams } from "@api-contracts/jobs/create";
 import UserEntity from "@business-logic/User";
 import { v4 as uuid } from "uuid";
@@ -17,6 +18,13 @@ export default class JobEntity {
         title: params.title,
         description: params.description,
         companyId: user.companyId,
+        Field: {
+          create: {
+            label: "Qualification",
+            companyId: user.companyId,
+            type: "SHORT_TEXT",
+          },
+        },
       },
     });
   }
@@ -29,6 +37,38 @@ export default class JobEntity {
     return prisma.job.findMany({
       where: {
         companyId: user.companyId,
+      },
+    });
+  }
+  async apply(data: JobsApplyRequestParam) {
+    const applied = await prisma.candidate.findFirst({
+      where: {
+        email: data.email,
+        jobId: data.jobid,
+      },
+    });
+
+    if (applied) return null;
+    return prisma.candidate.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        address: data.addres,
+        Job: {
+          connect: {
+            id: data.jobid,
+          },
+        },
+        FieldValue: {
+          createMany: {
+            data: data.fields,
+          },
+        },
+      },
+      select: {
+        id: true,
+        email: true,
+        jobId: true,
       },
     });
   }

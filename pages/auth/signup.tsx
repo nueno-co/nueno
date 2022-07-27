@@ -27,7 +27,6 @@ export default function Signup() {
     }
 
     setIsSubmitting(true);
-
     return axios
       .post("/api/auth/signup", {
         name,
